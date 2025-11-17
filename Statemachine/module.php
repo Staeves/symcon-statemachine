@@ -37,20 +37,20 @@ class Statemachine extends IPSModule {
 		return [
 			"type" => "PopupButton",
 			"caption" => "Alle Geräte einer Kategorie hinzufügen",
-			"popup" => [[
-				"buttons" => [
+			"popup" => [
+				"buttons" => [[
 					"caption" => "Hinzufügen",
 					"onClick" => [
 						'echo "TODO hinzufügen implementieren, Kategorie ist $CategoryToAdd";'
 					]
-				],
+				]],
 				"caption" => "Alle Geräte einer Kategorie zum Zustandsautomaten hinzufügen",
-				"items" => [
+				"items" => [[
 					"type" => "SelectCategory",
 					"caption" => "Kategorie",
 					"name" => "CategoryToAdd"
-				]
-			]]
+				]]
+			]
 		];
 	}
 	private function devicesListForm() {
