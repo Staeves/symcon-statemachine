@@ -10,7 +10,7 @@ class Statemachine extends IPSModule {
 
 	// dynamic configurationform
 	public function GetConfigurationForm () : string {
-		/*$res = ["elements" => [
+		$res = ["elements" => [
 			$this->addDevicesButtonForm(),
 			$this->devicesListForm(),
 			$this->statesListForm(),
@@ -19,7 +19,7 @@ class Statemachine extends IPSModule {
 			$this->transitionsListForm()
 		]];
 		$json = json_encode($res);
-		echo $json;*/
+		/*echo $json;*/
 		return '{
     "elements":
     [
@@ -42,7 +42,7 @@ class Statemachine extends IPSModule {
     ],
     "status":
     [
-        { "code": 102, "icon": "active", "caption": "Login information valid" },
+        { "code": 102, "icon": "active", "caption": "$json" },
         { "code": 201, "icon": "error", "caption": "Authentication failed" },
         { "code": 202, "icon": "error", "caption": "No credits left" }
     ]
