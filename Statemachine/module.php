@@ -32,6 +32,11 @@ class Statemachine extends IPSModule {
 	public function RequestAction ($Ident, $Value) : void {
 	}
 
+	public function AddDevices($parentID) : void {
+		// add all VirtDev devices that are in the category $parentID
+		$newDevices = array_filter(IPS_GetChildrenIDs($parentID), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}";});
+		$this->WriteAttributeString("devices", json_encode(array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices))));
+	}
 	/* 
 	 * private Form functions
 	 */
@@ -43,8 +48,7 @@ class Statemachine extends IPSModule {
 				"buttons" => [[
 					"caption" => "Hinzufügen",
 					"onClick" => [
-						'$newDevices = array_filter(IPS_GetChildrenIDs($CategoryToAdd), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}";});',
-						'$this->WriteAttributeString("devices", json_encode(array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices))));'
+						'StateM_AddDevices($id, $CategoryToAdd)'
 					]
 				]],
 				"caption" => "Alle Geräte einer Kategorie zum Zustandsautomaten hinzufügen",
