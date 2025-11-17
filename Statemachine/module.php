@@ -63,8 +63,8 @@ class Statemachine extends IPSModule {
 	private function devicesListForm() {
 		return [
 			"type" => "List", 
-			//"add" => true,
-			//"caption" => "Geräte",
+			"add" => true,
+			"caption" => "Geräte",
 			"columns" => [
 				[
 					"add" => 0,
@@ -79,10 +79,10 @@ class Statemachine extends IPSModule {
 					"width" => "auto"
 				]
 			]
-			//"delete" => true,
-			//"rowCount" => 10,
-			//"values" => [], // array_map(function ($x) {return ["deviceID" => $x];}, json_decode($this->ReadAttributeString("devices"))),
-			//"loadValuesFromConfiguration" => false
+			"delete" => true,
+			"rowCount" => 10,
+			"values" => array_map(function ($x) {return ["deviceID" => $x];}, json_decode($this->ReadAttributeString("devices"))),
+			"loadValuesFromConfiguration" => false
 		];
 	}
 	private function statesListForm() {
