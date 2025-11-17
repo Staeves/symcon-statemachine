@@ -18,7 +18,9 @@ class Statemachine extends IPSModule {
 			$this->triggerListFrom(),
 			$this->transitionsListForm()
 		]];
-		return json_encode($res);
+		$json = json_encode($res);
+		echo $json;
+		return "{}";
 	}
 
 	// Overwrites the internal IPS_ApplyChanges($id) function
