@@ -38,8 +38,7 @@ class Statemachine extends IPSModule {
     [
         { "type": "ValidationTextBox", "name": "Number", "caption": "Number" },
         { "type": "ValidationTextBox", "name": "Message", "caption": "Message" },
-        { "type": "Button", "label": "Send Message", "onClick": "SMS_Send($id, $Number, $Message);" },
-        { "type": "Button", "label": "Read Balance", "onClick": "echo 'Balance: '.sprintf('%.2f', SMS_RequestBalance($id)).' credits';" }
+        { "type": "Button", "label": "Send Message", "onClick": "SMS_Send($id, $Number, $Message);" }
     ],
     "status":
     [
