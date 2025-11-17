@@ -20,33 +20,7 @@ class Statemachine extends IPSModule {
 		]];
 		$json = json_encode($res);
 		/*echo $json;*/
-		return '{
-    "elements":
-    [
-        { "type": "ValidationTextBox", "name": "Username", "caption": "Username" },
-        { "type": "ValidationTextBox", "name": "Password", "caption": "Password" },
-        { "type": "NumberSpinner", "name": "APIID", "caption": "APIID" },
-        { "type": "ValidationTextBox", "name": "Sender", "caption": "Sender" },
-        { "type": "Select", "name": "SMSType", "caption": "Type",
-            "options": [
-                { "label": "SMS", "value": 0 },
-                { "label": "Combi-SMS", "value": 1 },
-                { "label": "MMS", "value": 2 }
-        ]}
-    ],
-    "actions":
-    [
-        { "type": "ValidationTextBox", "name": "Number", "caption": "Number" },
-        { "type": "ValidationTextBox", "name": "Message", "caption": "Message" },
-        { "type": "Button", "label": "Send Message", "onClick": "SMS_Send($id, $Number, $Message);" }
-    ],
-    "status":
-    [
-        { "code": 102, "icon": "active", "caption": "' . $json . '" },
-        { "code": 201, "icon": "error", "caption": "Authentication failed" },
-        { "code": 202, "icon": "error", "caption": "No credits left" }
-    ]
-}';
+		return $json;
 	}
 
 	// Overwrites the internal IPS_ApplyChanges($id) function
