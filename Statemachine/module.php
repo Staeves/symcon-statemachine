@@ -48,7 +48,7 @@ class Statemachine extends IPSModule {
 				"buttons" => [[
 					"caption" => "Hinzufügen",
 					"onClick" => [
-						'StateM_AddDevices($id, $CategoryToAdd)'
+						'StateM_AddDevices($id, $CategoryToAdd);'
 					]
 				]],
 				"caption" => "Alle Geräte einer Kategorie zum Zustandsautomaten hinzufügen",
