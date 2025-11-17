@@ -51,5 +51,20 @@ class Statemachine extends IPSModule {
 			]
 		];
 	}
+	private function devicesListForm() {
+		return ["type" => "Label", "caption" => "DUMMY"];
+	}
+	private function statesListForm() {
+		return ["type" => "Label", "caption" => "DUMMY"];
+	}
+	private function stategroupsListForm() {
+		return ["type" => "Label", "caption" => "DUMMY"];
+	}
+	private function triggerListFrom() {
+		return ["type" => "Label", "caption" => "DUMMY"];
+	}
+	private function transitionsListForm() {
+		return ["type" => "Label", "caption" => "DUMMY"];
+	}
 }
 
