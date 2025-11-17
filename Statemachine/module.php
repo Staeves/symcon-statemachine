@@ -10,7 +10,15 @@ class VirtualDevice extends IPSModule {
 
 	// dynamic configurationform
 	public function GetConfigurationForm () : string {
-		return "";
+		$res = ["elements" => [
+			$this->addDevicesButtonForm(),
+			$this->devicesListForm(),
+			$this->statesListForm(),
+			$this->stategroupsListForm(),
+			$this->triggerListFrom(),
+			$this->transitionsListForm()
+		]];
+		return json_encode($res);
 	}
 
 	// Overwrites the internal IPS_ApplyChanges($id) function
@@ -18,6 +26,30 @@ class VirtualDevice extends IPSModule {
 	}
 
 	public function RequestAction ($Ident, $Value) : void {
+	}
+
+	/* 
+	 * private Form functions
+	 */
+	private function addDevicesButtonForm() {
+		return [
+			"type" => "List",
+			"caption" => "Alle Geräte einer Kategorie hinzufügen",
+			"popup" => [
+				"buttons" => [
+					"caption" => "Hinzufügen",
+					"onClick" => [
+						'echo "TODO hinzufügen implementieren, Kategorie ist $CategoryToAdd";'
+					]
+				]
+				"caption" => "Alle Geräte einer Kategorie zum Zustandsautomaten hinzufügen",
+				"items" => [
+					"type" => "SelectCategory",
+					"caption" => "Kategorie",
+					"name" => "CategoryToAdd"
+				]
+			]
+		];
 	}
 }
 
