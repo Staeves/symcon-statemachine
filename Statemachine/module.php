@@ -5,7 +5,9 @@ class Statemachine extends IPSModule {
 	public function Create(): void {
 		// Don't delete this line
 		parent::Create();
-
+		
+		// use atributes, so that we can alter and format them as we want
+		$this->RegisterAttributeString("devices", "[]");	// json encoded list of devices that are part of this Statemachine
 	}
 
 	// dynamic configurationform
@@ -41,7 +43,8 @@ class Statemachine extends IPSModule {
 				"buttons" => [[
 					"caption" => "Hinzufügen",
 					"onClick" => [
-						'echo "TODO hinzufügen implementieren, Kategorie ist $CategoryToAdd";'
+						'$newDevices = array_filter(IPS_GetChildrenIDs($CategoryToAdd), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}"});',
+						'$this->WriteAttributeString("devices", json_encode(array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices))));'
 					]
 				]],
 				"caption" => "Alle Geräte einer Kategorie zum Zustandsautomaten hinzufügen",
