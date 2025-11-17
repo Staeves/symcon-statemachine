@@ -10,7 +10,7 @@ class Statemachine extends IPSModule {
 
 	// dynamic configurationform
 	public function GetConfigurationForm () : string {
-		$res = ["elements" => [
+		/*$res = ["elements" => [
 			$this->addDevicesButtonForm(),
 			$this->devicesListForm(),
 			$this->statesListForm(),
@@ -19,7 +19,7 @@ class Statemachine extends IPSModule {
 			$this->transitionsListForm()
 		]];
 		$json = json_encode($res);
-		echo $json;
+		echo $json;*/
 		return '{
     "elements":
     [
