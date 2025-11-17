@@ -43,7 +43,7 @@ class Statemachine extends IPSModule {
 				"buttons" => [[
 					"caption" => "Hinzufügen",
 					"onClick" => [
-						'$newDevices = array_filter(IPS_GetChildrenIDs($CategoryToAdd), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}"});',
+						'$newDevices = array_filter(IPS_GetChildrenIDs($CategoryToAdd), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}";});',
 						'$this->WriteAttributeString("devices", json_encode(array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices))));'
 					]
 				]],
