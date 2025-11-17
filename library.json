@@ -1,0 +1,12 @@
+{
+     "id": "{2A7BC7C5-24F4-15CB-1D42-36685623DE58}",
+     "author": "Adrian Staeves",
+     "name": "Statemachine",
+     "url": "https://github.com/Staeves/symcon-statemachine",
+     "compatibility": {
+         "version": "7.2"
+     },
+     "version": "0.1",
+     "build": 0,
+     "date": 0
+ }

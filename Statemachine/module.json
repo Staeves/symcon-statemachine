@@ -1,0 +1,14 @@
+{
+    "id": "{977AC9BE-70DA-F8F2-2E85-1FEA2C8CCC1D}",
+    "name": "Statemachine",
+    "type": 3,
+    "vendor": "VirtDevice",
+    "url": "https://github.com/Staeves/symcon-statemachine",
+    "aliases": [
+        "Statemachine"
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "StateM"
+}
