@@ -78,7 +78,7 @@ class Statemachine extends IPSModule {
 					"save" => false,
 					"width" => "auto"
 				]
-			]
+			],
 			"delete" => true,
 			"rowCount" => 10,
 			"values" => array_map(function ($x) {return ["deviceID" => $x];}, json_decode($this->ReadAttributeString("devices"))),
