@@ -69,10 +69,10 @@ class Statemachine extends IPSModule {
 				[
 					"add" => 0,
 					"caption" => "ID",
-					"edit" => [
+					"edit" => [[
 						"type" => "SelectInstance",
 						"validModules" => ["{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}"]
-					],
+					]],
 					"name" => "deviceID",
 					"quickFilter" => true,
 					"save" => false
