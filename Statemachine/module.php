@@ -1,6 +1,6 @@
 <?
 
-class VirtualDevice extends IPSModule {
+class Statemachine extends IPSModule {
 	// Overrides the internal IPS_Create($id) function
 	public function Create(): void {
 		// Don't delete this line
