@@ -41,7 +41,7 @@ class Statemachine extends IPSModule {
 					"onClick" => [
 						'echo "TODO hinzufügen implementieren, Kategorie ist $CategoryToAdd";'
 					]
-				]
+				],
 				"caption" => "Alle Geräte einer Kategorie zum Zustandsautomaten hinzufügen",
 				"items" => [
 					"type" => "SelectCategory",
