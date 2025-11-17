@@ -34,7 +34,7 @@ class Statemachine extends IPSModule {
 	 * private Form functions
 	 */
 	private function addDevicesButtonForm() {
-		return [
+		/*return [
 			"type" => "List",
 			"caption" => "Alle Geräte einer Kategorie hinzufügen",
 			"popup" => [
@@ -51,7 +51,8 @@ class Statemachine extends IPSModule {
 					"name" => "CategoryToAdd"
 				]
 			]
-		];
+		];*/
+		return ["type" => "Label", "caption" => "DUMMY"];
 	}
 	private function devicesListForm() {
 		return ["type" => "Label", "caption" => "DUMMY"];
