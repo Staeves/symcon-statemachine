@@ -27,6 +27,7 @@ class Statemachine extends IPSModule {
 
 	// Overwrites the internal IPS_ApplyChanges($id) function
 	public function ApplyChanges(): void {
+		parent::ApplyChanges();
 	}
 
 	public function RequestAction ($Ident, $Value) : void {
@@ -35,12 +36,14 @@ class Statemachine extends IPSModule {
 	public function AddDevices($parentID) : void {
 		// add all VirtDev devices that are in the category $parentID
 		$newDevices = array_filter(IPS_GetChildrenIDs($parentID), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}";});
-		$this->WriteAttributeString("devices", json_encode(array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices))));
+		$devices = array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices));
+		// update devices list in the settings
+		$this->UpdateFormField("devicesList", "values", json_encode($this->devicesAsListValues($devices)));
 	}
 	/* 
 	 * private Form functions
 	 */
-	private function addDevicesButtonForm() {
+	private function addDevicesButtonForm() : array {
 		return [
 			"type" => "PopupButton",
 			"caption" => "Alle Geräte einer Kategorie hinzufügen",
@@ -62,7 +65,8 @@ class Statemachine extends IPSModule {
 	}
 	private function devicesListForm() {
 		return [
-			"type" => "List", 
+			"type" => "List",
+		        "name" => "devicesList",
 			"add" => true,
 			"caption" => "Geräte",
 			"columns" => [
@@ -81,7 +85,7 @@ class Statemachine extends IPSModule {
 			],
 			"delete" => true,
 			"rowCount" => 10,
-			"values" => array_map(function ($x) {return ["deviceID" => $x];}, json_decode($this->ReadAttributeString("devices"))),
+			"values" => $this->devicesAsListValues(json_decode($this->ReadAttributeString("devices"))),
 			"loadValuesFromConfiguration" => false
 		];
 	}
@@ -96,6 +100,10 @@ class Statemachine extends IPSModule {
 	}
 	private function transitionsListForm() {
 		return ["type" => "Label", "caption" => "DUMMY"];
+	}
+
+	private function devicesAsListValues($deviceList) {
+		return array_map(function ($x) {return ["deviceID" => $x];}, $deviceList);
 	}
 }
 
