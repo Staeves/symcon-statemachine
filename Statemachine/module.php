@@ -102,7 +102,7 @@ class Statemachine extends IPSModule {
 	private function statesListForm() {
 		$states = json_decode($this->ReadAttributeString("states"));
 		$maxIndex = empty($states) ? 0 : max(array_keys($states));
-		$allDevicesEmptyList = array_map(function ($x) {return ["deviceID"=>$x, "value"=>""];}, json_decode($this->ReadAttributeString("devices")));
+		$allDevicesEmptyList = array_map(function ($x) {return ["deviceID"=>$x, "value"=>""];}, json_decode($this->ReadAttributeString("devices"), true));
 		/*
 		 * has to be something like:
 		 * [
