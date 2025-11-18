@@ -85,7 +85,7 @@ class Statemachine extends IPSModule {
 					],
 					"name" => "deviceID",
 					"quickFilter" => true,
-					"save" => false,
+					"save" => true,
 					"width" => "auto"
 				]
 			],
