@@ -44,7 +44,7 @@ class Statemachine extends IPSModule {
 	public function AddDevices($parentID) : void {
 		// add all VirtDev devices that are in the category $parentID
 		$newDevices = array_filter(IPS_GetChildrenIDs($parentID), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}";});
-		$devices = array_unique(array_merge(json_decode($this->ReadAttributeString("devices"), true), $newDevices));
+		$devices = array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices));
 		// update devices list in the settings
 		$this->UpdateFormField("devicesList", "values", json_encode($this->devicesAsListValues($devices)));
 	}
@@ -93,7 +93,7 @@ class Statemachine extends IPSModule {
 			],
 			"delete" => true,
 			"rowCount" => 10,
-			"values" => $this->devicesAsListValues(json_decode($this->ReadAttributeString("devices"), true)),
+			"values" => $this->devicesAsListValues(json_decode($this->ReadAttributeString("devices"))),
 			"loadValuesFromConfiguration" => false
 		];
 	}
