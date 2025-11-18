@@ -8,9 +8,11 @@ class Statemachine extends IPSModule {
 		
 		// use atributes, so that we can alter and format them as we want
 		$this->RegisterAttributeString("devices", "[]");	// json encoded list of devices that are part of this Statemachine
-		
+		$this->RegisterAttributeString("states", "[]");		// json encoded list of states each is [<id> => ["name"=> string, "values" => [<instanceID> => Value]]]
+
 		// we need the prperty or the apply button will never show up if the list has a name :(
 		$this->RegisterPropertyString("devicesList", "[]");
+		$this->RegisterPropertyString("statesList", "[]");
 	}
 
 	// dynamic configurationform
@@ -98,6 +100,25 @@ class Statemachine extends IPSModule {
 		];
 	}
 	private function statesListForm() {
+		$states = json_decode($this->ReadAttributeString("states"));
+		$maxIndex = empty($states) ? 0 : max(array_keys($states));
+		$allDevicesEmptyList = array_map(function ($x) {return ["deviceID"=>$x, "value"=>""];}, json_decode($this->ReadAttributeString("devices")));
+		/*
+		 * has to be something like:
+		 * [
+		 * 	[
+		 * 		"stateID" => <id>,
+		 * 		"stateName" => <name>,
+		 * 		"stateValues" => [
+		 * 			[
+		 * 				"deviceID" => 12345,
+		 * 				"devValue" => <string>
+		 * 			], ...
+		 * 		]
+		 * 	], ....
+		 * ]
+		 */
+		$stateValues = [];
 		return [
 			"type" => "List",
 		        "name" => "statesList",
@@ -105,7 +126,7 @@ class Statemachine extends IPSModule {
 			"caption" => "Zustände",
 			"columns" => [
 				[
-					"add" => 0,	// TODO auto increment
+					"add" => $maxIndex + 1,	// TODO auto increment when adding an element
 					"caption" => "ID",
 					"edit" => [
 						"type" => "NumberSpinner"
@@ -128,7 +149,7 @@ class Statemachine extends IPSModule {
 					"width" => "auto"
 				],
 				[
-					"add" => "{}",	// TODO all devices set to NULL
+					"add" => $allDevicesEmptyList,
 					"caption" => "Werte",
 					"edit" => [
 						"type" => "List",
@@ -143,7 +164,7 @@ class Statemachine extends IPSModule {
 							],
 							[
 								"caption" => "Wert",
-								"name" => "value",
+								"name" => "devValue",
 								"edit" => [
 									"type" => "ValidationTextBox"
 								],
@@ -153,18 +174,18 @@ class Statemachine extends IPSModule {
 							]
 						],
 						"delete" => false,
-						"values" => [],	// TODO add all devices with values if assigned
 						"loadValuesFromConfiguration" => false
 					],
 					"name" => "stateValues",
 					"quickFilter" => false,
 					"save" => true,
-					"width" => "500px"
+					"width" => "0px",
+					"visible" => false
 				]
 			],
 			"delete" => true,
 			"rowCount" => 10,
-			"values" => [],	// TODO
+			"values" => $stateValues,
 			"loadValuesFromConfiguration" => false
 		];
 	}
