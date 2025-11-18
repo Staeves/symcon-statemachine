@@ -33,7 +33,11 @@ class Statemachine extends IPSModule {
 		// Don't delete this line
 		parent::ApplyChanges();
 
-		$this->WriteAttributeString("devices", json_encode(array_map(function ($x) {return $x["deviceID"];}, json_decode($this->ReadPropertyString("devicesList")))));
+		$rawIDs = json_decode($this->ReadPropertyString("devicesList"));
+		$this->LogMessage("$rawIDs", 10204);
+		$convertedIDs = array_map(function ($x) {return $x["deviceID"];}, $rawIDs);
+		$this->LogMessage("$convertedIDs", 10204);
+		$this->WriteAttributeString("devices", json_encode($convertedIDs));
 	}
 
 	public function RequestAction ($Ident, $Value) : void {
