@@ -98,7 +98,75 @@ class Statemachine extends IPSModule {
 		];
 	}
 	private function statesListForm() {
-		return ["type" => "Label", "caption" => "DUMMY"];
+		return [
+			"type" => "List",
+		        "name" => "statesList",
+			"add" => true,
+			"caption" => "Zustände",
+			"columns" => [
+				[
+					"add" => 0,	// TODO auto increment
+					"caption" => "ID",
+					"edit" => [
+						"type" => "NumberSpinner"
+					],
+					"name" => "stateID",
+					"quickFilter" => true,
+					"save" => true,
+					"width" => "100px"
+				],
+				[
+					"add" => "NeuerZustand",
+					"caption" => "Zustand",
+					"edit" => [
+						"type" => "ValidationTextBox",
+						"validate" => "[a-zA-Z0-9]*"
+					],
+					"name" => "stateName",
+					"quickFilter" => true,
+					"save" => true,
+					"width" => "auto"
+				],
+				[
+					"add" => "{}",	// TODO all devices set to NULL
+					"caption" => "Werte",
+					"edit" => [
+						"type" => "List",
+						"add" => false,
+						"columns" => [
+							[
+								"caption" => "Gerät",
+								"name" => "deviceID",
+								"quickFilter" => true,
+								"save" => true,
+								"width" => "auto"
+							],
+							[
+								"caption" => "Wert",
+								"name" => "value",
+								"edit" => [
+									"type" => "ValidationTextBox"
+								],
+								"quickFilter" => false,
+								"save" => true,
+								"width" => "800px"
+							]
+						],
+						"delete" => false,
+						"values" => [],	// TODO add all devices with values if assigned
+						"loadValuesFromConfiguration" => false
+					],
+					"name" => "stateValues",
+					"quickFilter" => false,
+					"save" => true,
+					"width" => "500px"
+				]
+			],
+			"delete" => true,
+			"rowCount" => 10,
+			"values" => [],	// TODO
+			"loadValuesFromConfiguration" => false
+		];
 	}
 	private function stategroupsListForm() {
 		return ["type" => "Label", "caption" => "DUMMY"];
