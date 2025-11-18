@@ -33,7 +33,7 @@ class Statemachine extends IPSModule {
 		// Don't delete this line
 		parent::ApplyChanges();
 
-		$this->LogMessage($this->ReadPropertyString("devicesList"), 10206);
+		$this->LogMessage($this->ReadPropertyString("devicesList"), 10204);
 	}
 
 	public function RequestAction ($Ident, $Value) : void {
