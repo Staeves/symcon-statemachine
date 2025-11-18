@@ -30,6 +30,10 @@ class Statemachine extends IPSModule {
 
 	// Overwrites the internal IPS_ApplyChanges($id) function
 	public function ApplyChanges(): void {
+		// Don't delete this line
+		parent::ApplyChanges();
+
+		$this->LogMessage($this->ReadPropertyString("devicesList"), 10206);
 	}
 
 	public function RequestAction ($Ident, $Value) : void {
