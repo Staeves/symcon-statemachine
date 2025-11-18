@@ -65,7 +65,7 @@ class Statemachine extends IPSModule {
 	private function devicesListForm() {
 		return [
 			"type" => "List",
-		        //"name" => "devicesList",
+		        "name" => "devicesList",
 			"add" => true,
 			"caption" => "Geräte",
 			"columns" => [
