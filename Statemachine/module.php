@@ -8,6 +8,9 @@ class Statemachine extends IPSModule {
 		
 		// use atributes, so that we can alter and format them as we want
 		$this->RegisterAttributeString("devices", "[]");	// json encoded list of devices that are part of this Statemachine
+		
+		// we need the prperty or the apply button will never show up if the list has a name :(
+		$this->RegisterPropertyString("devicesList", "");
 	}
 
 	// dynamic configurationform
