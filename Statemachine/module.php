@@ -40,7 +40,7 @@ class Statemachine extends IPSModule {
 		$newDevices = array_filter(IPS_GetChildrenIDs($parentID), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}";});
 		$devices = array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices));
 		// update devices list in the settings
-		//$this->UpdateFormField("devicesList", "values", json_encode($this->devicesAsListValues($devices)));
+		$this->UpdateFormField("devicesList", "values", json_encode($this->devicesAsListValues($devices)));
 	}
 	/* 
 	 * private Form functions
