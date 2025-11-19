@@ -51,7 +51,7 @@ class Statemachine extends IPSModule {
 		};
 		$getKeys = function ($x) {
 			return $x["stateID"];
-		}
+		};
 		$convertedStates = array_combine(array_map($getKeys, $stateData), array_map($convertStates, $stateData));
 		$this->WriteAttributeString("states", json_encode($convertedStates));
 	}
