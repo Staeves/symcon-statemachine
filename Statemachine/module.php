@@ -159,7 +159,7 @@ class Statemachine extends IPSModule {
 				"stateID" => $id,
 				"stateName" => $val["name"],
 				"stateValues" => $stateValuesList($val["values"]),
-				"rowColor" => (in_array("", $val["values"]) ? "#FFFFC0" : "transparent")
+				"rowColor" => (in_array("", $val["values"]) || count($allDevicesEmptyList) != count($val["values"]) ? "#FFFFC0" : "transparent")
 			];
 		};
 		$stateValues = array_map($statesListMap, array_keys($states), $states);
