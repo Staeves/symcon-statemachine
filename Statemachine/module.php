@@ -140,7 +140,7 @@ class Statemachine extends IPSModule {
 			$devices_list = $allDevicesEmptyList;	// create a copy
 			foreach ($devices_list as &$dev) {
 				if (array_key_exists($dev["deviceID"], $state_vals)) {
-					$dev["value"] = $state_vals[$dev["deviceID"]];
+					$dev["devValue"] = $state_vals[$dev["deviceID"]];
 				}
 			}
 			return $devices_list;
