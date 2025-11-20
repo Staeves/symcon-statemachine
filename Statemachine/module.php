@@ -55,19 +55,23 @@ class Statemachine extends IPSModule {
 		};
 		$convertedStates = array_combine(array_map($getKeys, $stateData), array_map($convertStates, $stateData));
 		$this->WriteAttributeString("states", json_encode($convertedStates));
+
+
+		// Reload the form to make shre it is updated
+		$this->ReloadForm();
 	}
 
 	public function RequestAction ($Ident, $Value) : void {
 	}
 
-	public function AddDevices($parentID) : void {
+	public function AddDevices(int $parentID) : void {
 		// add all VirtDev devices that are in the category $parentID
 		$newDevices = array_filter(IPS_GetChildrenIDs($parentID), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}";});
 		$devices = array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices));
 		// update devices list in the settings
 		$this->UpdateFormField("devicesList", "values", json_encode($this->devicesAsListValues($devices)));
 	}
-	public function UpdateNextStateListIndex($states) : void {
+	public function UpdateNextStateListIndex(array $states) : void {
 		$maxIndex = empty($states) ? 0 : max(array_map(function ($x) {return $x["stateID"];}, iterator_to_array($states)));
 		$this->UpdateFormField("statesList", "columns.0.add", $maxIndex+1);
 	}
