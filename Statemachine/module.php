@@ -184,7 +184,7 @@ class Statemachine extends IPSModule {
 					"width" => "auto"
 				],
 				[
-					//"add" => $allDevicesEmptyList,
+					"add" => $allDevicesEmptyList,
 					"caption" => "Werte",
 					"edit" => [
 						"type" => "List",
