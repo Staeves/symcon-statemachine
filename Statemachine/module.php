@@ -8,7 +8,7 @@ class Statemachine extends IPSModule {
 		
 		// use atributes, so that we can alter and format them as we want
 		$this->RegisterAttributeString("devices", "[]");	// json encoded list of devices that are part of this Statemachine
-		$this->RegisterAttributeString("states", "[]");		// json encoded list of states each is [<id> => ["name"=> string, "values" => [<instanceID> => Value]]]
+		$this->RegisterAttributeString("states", "[]");		// json encoded list of states each is [<genid> => ["id" => int, "name"=> string, "values" => [<instanceID> => Value]]]
 
 		// we need the prperty or the apply button will never show up if the list has a name :(
 		$this->RegisterPropertyString("devicesList", "[]");
@@ -49,10 +49,10 @@ class Statemachine extends IPSModule {
 				array_map(function ($y) {return $y["deviceID"];}, $filteredStateValues),
 				array_map(function ($y) {return $y["devValue"];}, $filteredStateValues)
 			);
-			return [ "name" => $x["stateName"], "values" => $valuesArray];
+			return ["id" => $x["stateID"], "name" => $x["stateName"], "values" => $valuesArray];
 		};
 		$getKeys = function ($x) {
-			return $x["stateID"];
+			return $x["stateGenID"];
 		};
 		$convertedStates = array_combine(array_map($getKeys, $stateData), array_map($convertStates, $stateData));
 		$this->WriteAttributeString("states", json_encode($convertedStates));
@@ -75,6 +75,7 @@ class Statemachine extends IPSModule {
 	public function UpdateNextStateListIndex(mixed $states) : void {
 		$maxIndex = empty($states) ? 0 : max(array_map(function ($x) {return $x["stateID"];}, iterator_to_array($states)));
 		$this->UpdateFormField("statesList", "columns.0.add", $maxIndex+1);
+		$this->UpdateFormField("statesList", "columns.3.add", uniqid("state-"));
 	}
 
 	/* 
@@ -128,13 +129,14 @@ class Statemachine extends IPSModule {
 	}
 	private function statesListForm() {
 		$states = json_decode($this->ReadAttributeString("states"), true);
-		$maxIndex = empty($states) ? 0 : max(array_keys($states));
+		$maxIndex = empty($states) ? 0 : max(array_map(function ($x) {return $x["id"];}, $states));
 		$allDevicesEmptyList = array_map(function ($x) {return ["deviceID"=>$x, "devValue"=>""];}, json_decode($this->ReadAttributeString("devices"), true));
 		/*
 		 * has to be something like:
 		 * [
 		 * 	[
 		 * 		"stateID" => <id>,
+		 * 		"stateGenID" => state-<uniqueid()>,	
 		 * 		"stateName" => <name>,
 		 * 		"stateValues" => [
 		 * 			[
@@ -155,10 +157,11 @@ class Statemachine extends IPSModule {
 			}
 			return $devices_list;
 		};
-		$statesListMap = function ($id, $val) use($stateValuesList, $allDevicesEmptyList) {
+		$statesListMap = function ($genID, $val) use($stateValuesList, $allDevicesEmptyList) {
 			return [
-				"stateID" => $id,
+				"stateID" => $val["id"],
 				"stateName" => $val["name"],
+				"stateGenID" => $id,
 				"stateValues" => $stateValuesList($val["values"]),
 				"rowColor" => (in_array("", $val["values"]) || count($allDevicesEmptyList) != count($val["values"]) ? "#FFFFC0" : "transparent")
 			];
@@ -226,6 +229,15 @@ class Statemachine extends IPSModule {
 						"loadValuesFromConfiguration" => true	// respect the values from the "outer" list
 					],
 					"name" => "stateValues",
+					"quickFilter" => false,
+					"save" => true,
+					"width" => "0px",
+					"visible" => false
+				], 
+				[
+					"add" => uniqid("state-"),
+					"caption" => "internal ID",
+					"name" => "stateGenID",
 					"quickFilter" => false,
 					"save" => true,
 					"width" => "0px",
