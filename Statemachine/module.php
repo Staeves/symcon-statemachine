@@ -136,7 +136,8 @@ class Statemachine extends IPSModule {
 		 * 				"deviceID" => 12345,
 		 * 				"devValue" => <string>
 		 * 			], ...
-		 * 		]
+		 * 		],
+		 * 		"rowColor" => "#FFFFC0"	// iff at least one device has value ""
 		 * 	], ....
 		 * ]
 		 */
@@ -153,7 +154,8 @@ class Statemachine extends IPSModule {
 			return [
 				"stateID" => $id,
 				"stateName" => $val["name"],
-				"stateValues" => $stateValuesList($val["values"])
+				"stateValues" => $stateValuesList($val["values"]),
+				"rowColor" => (in_array("", $val["values"]) ? "#FFFFC0" : "transparent")
 			];
 		};
 		$stateValues = array_map($statesListMap, array_keys($states), $states);
