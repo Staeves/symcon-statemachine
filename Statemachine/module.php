@@ -221,8 +221,8 @@ class Statemachine extends IPSModule {
 			],
 			"delete" => true,
 			"rowCount" => 10,
-			"values" => $stateValues,
-			"loadValuesFromConfiguration" => false
+			//"values" => $stateValues,
+			"loadValuesFromConfiguration" => true
 		];
 	}
 	private function stategroupsListForm() {
