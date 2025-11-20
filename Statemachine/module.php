@@ -67,9 +67,9 @@ class Statemachine extends IPSModule {
 		// update devices list in the settings
 		$this->UpdateFormField("devicesList", "values", json_encode($this->devicesAsListValues($devices)));
 	}
-	public function UpdateNextStateListIndex() : void {
-		$states = json_decode($this->ReadAttributeString("states"), true);
-		$maxIndex = empty($states) ? 0 : max(array_keys($states));
+	public function UpdateNextStateListIndex($values) : void {
+		$states = json_decode($values, true);
+		$maxIndex = empty($states) ? 0 : max(array_map(function ($x) {return $x["stateID"];}, $states));
 		$this->UpdateFormField("statesList", "columns.0.add", $maxIndex+1);
 	}
 	/* 
@@ -228,10 +228,10 @@ class Statemachine extends IPSModule {
 			"rowCount" => 10,
 			"values" => $stateValues,
 			"loadValuesFromConfiguration" => false,
-			"onAdd" => "StateM_UpdateNextStateListIndex(\$id);",
-			"onChangeOrder" => "StateM_UpdateNextStateListIndex(\$id);",
-			"onDelete" => "StateM_UpdateNextStateListIndex(\$id);",
-			"onEdit" => "StateM_UpdateNextStateListIndex(\$id);"
+			"onAdd" => "StateM_UpdateNextStateListIndex(\$id, \$statesList);",
+			"onChangeOrder" => "StateM_UpdateNextStateListIndex(\$id, \$statesList);",
+			"onDelete" => "StateM_UpdateNextStateListIndex(\$id, \$statesList);",
+			"onEdit" => "StateM_UpdateNextStateListIndex(\$id, \$statesList);"
 		];
 	}
 	private function stategroupsListForm() {
