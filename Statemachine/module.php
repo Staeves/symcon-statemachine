@@ -42,7 +42,6 @@ class Statemachine extends IPSModule {
 
 		// state List
 		$stateData = json_decode($this->ReadPropertyString("statesList"), true);
-		$this->LogMessage(json_encode($stateData), 10204);
 		$convertStates = function($x) {
 			$valuesArray = array_combine(
 				array_map(function ($y) {return $y["deviceID"];}, $x["stateValues"]),
@@ -122,7 +121,6 @@ class Statemachine extends IPSModule {
 	}
 	private function statesListForm() {
 		$states = json_decode($this->ReadAttributeString("states"), true);
-		$this->LogMessage(json_encode($states), 10204);
 		$maxIndex = empty($states) ? 0 : max(array_keys($states));
 		$allDevicesEmptyList = array_map(function ($x) {return ["deviceID"=>$x, "devValue"=>""];}, json_decode($this->ReadAttributeString("devices"), true));
 		/*
@@ -157,7 +155,6 @@ class Statemachine extends IPSModule {
 			];
 		};
 		$stateValues = array_map($statesListMap, array_keys($states), $states);
-		$this->LogMessage(json_encode($stateValues), 10204);
 		return [
 			"type" => "List",
 		        "name" => "statesList",
