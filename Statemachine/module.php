@@ -209,7 +209,7 @@ class Statemachine extends IPSModule {
 							]
 						],
 						"delete" => false,
-						"values" => $allDevicesEmptyList,
+						//"values" => $allDevicesEmptyList,
 						"loadValuesFromConfiguration" => false
 					],
 					"name" => "stateValues",
