@@ -69,8 +69,6 @@ class Statemachine extends IPSModule {
 		// add all VirtDev devices that are in the category $parentID
 		$newDevices = array_filter(IPS_GetChildrenIDs($parentID), function($x) {return IPS_GetObject($x)["ObjectType"] == 1 && IPS_GetInstance($x)["ModuleInfo"]["ModuleID"] == "{5FC7B1D7-ED60-B72C-EA50-A8135F4E387A}";});
 		$devices = array_values(array_unique(array_merge(json_decode($this->ReadAttributeString("devices")), $newDevices)));	// array_values makes keys numeric again
-		$this->LogMessage(json_encode($newDevices), 10204);
-		$this->LogMessage(json_encode($devices), 10204);
 		// update devices list in the settings
 		$this->UpdateFormField("devicesList", "values", json_encode($this->devicesAsListValues($devices)));
 	}
