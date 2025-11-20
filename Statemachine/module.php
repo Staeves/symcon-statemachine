@@ -184,7 +184,7 @@ class Statemachine extends IPSModule {
 					"width" => "auto"
 				],
 				[
-					"add" => $allDevicesEmptyList,
+					//"add" => $allDevicesEmptyList,
 					"caption" => "Werte",
 					"edit" => [
 						"type" => "List",
@@ -221,8 +221,8 @@ class Statemachine extends IPSModule {
 			],
 			"delete" => true,
 			"rowCount" => 10,
-			//"values" => $stateValues,
-			"loadValuesFromConfiguration" => true
+			"values" => $stateValues,
+			"loadValuesFromConfiguration" => false
 		];
 	}
 	private function stategroupsListForm() {
