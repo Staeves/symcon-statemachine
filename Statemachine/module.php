@@ -18,7 +18,7 @@ class Statemachine extends IPSModule {
 	// dynamic configurationform
 	public function GetConfigurationForm () : string {
 		$res = ["elements" => [
-			["type" => "Label", "caption": "Bitte alle Änderungen übernehmen, bevor Sie die nächste Liste ausfüllen"],
+			["type" => "Label", "caption" => "Bitte alle Änderungen übernehmen, bevor Sie die nächste Liste ausfüllen"],
 			$this->addDevicesButtonForm(),
 			$this->devicesListForm(),
 			$this->statesListForm(),
