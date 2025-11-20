@@ -171,7 +171,7 @@ class Statemachine extends IPSModule {
 			"caption" => "Zustände",
 			"columns" => [
 				[
-					"add" => $maxIndex + 1,	// TODO auto increment when adding an element
+					"add" => $maxIndex + 1,
 					"caption" => "ID",
 					"edit" => [
 						"type" => "NumberSpinner"
@@ -223,8 +223,7 @@ class Statemachine extends IPSModule {
 							]
 						],
 						"delete" => false,
-						//"values" => $allDevicesEmptyList,
-						"loadValuesFromConfiguration" => true
+						"loadValuesFromConfiguration" => true	// respect the values from the "outer" list
 					],
 					"name" => "stateValues",
 					"quickFilter" => false,
