@@ -67,6 +67,11 @@ class Statemachine extends IPSModule {
 		// update devices list in the settings
 		$this->UpdateFormField("devicesList", "values", json_encode($this->devicesAsListValues($devices)));
 	}
+	public function UpdateNextStateListIndex() : void {
+		$states = json_decode($this->ReadAttributeString("states"), true);
+		$maxIndex = empty($states) ? 0 : max(array_keys($states));
+		$this->UpdateFormField("statesList", "columns.0.add", $maxIndex+1);
+	}
 	/* 
 	 * private Form functions
 	 */
@@ -222,7 +227,11 @@ class Statemachine extends IPSModule {
 			"delete" => true,
 			"rowCount" => 10,
 			"values" => $stateValues,
-			"loadValuesFromConfiguration" => false
+			"loadValuesFromConfiguration" => false,
+			"onAdd" => "StateM_UpdateNextStateListIndex($id);",
+			"onChangeOrder" => "StateM_UpdateNextStateListIndex($id);",
+			"onDelete" => "StateM_UpdateNextStateListIndex($id);",
+			"onEdit" => "StateM_UpdateNextStateListIndex($id);"
 		];
 	}
 	private function stategroupsListForm() {
