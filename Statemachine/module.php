@@ -134,7 +134,7 @@ class Statemachine extends IPSModule {
 		 * 	], ....
 		 * ]
 		 */
-		$stateValuesList = function ($state_vals) {
+		$stateValuesList = function ($state_vals) use($allDevicesEmptyList) {
 			$devices_list = $allDevicesEmptyList;	// create a copy
 			foreach ($devices_list as &$dev) {
 				if (array_key_exists($dev["deviceID"], $state_vals)) {
@@ -142,7 +142,7 @@ class Statemachine extends IPSModule {
 				}
 			}
 		};
-		$statesListMap = function ($id, $val) {
+		$statesListMap = function ($id, $val) use($stateValuesList) {
 			return [
 				"stateID" => $id,
 				"stateName" => $val["name"],
