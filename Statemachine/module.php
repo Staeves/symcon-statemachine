@@ -194,6 +194,10 @@ class Statemachine extends IPSModule {
 							[
 								"caption" => "Gerät",
 								"name" => "deviceID",
+								"edit" => [
+									"type" => "SelectInstance",
+									"enabled", => false
+								],
 								"quickFilter" => true,
 								"save" => true,
 								"width" => "auto"
