@@ -60,8 +60,9 @@ class Statemachine extends IPSModule {
 
 		// state group List
 		$stateGroupData = json_decode($this->ReadPropertyString("stateGroupsList"), true);
-		$convertStateGroups = function($x) {
-			$statesArray = array_map(function ($y) {return $y["stateGenID"];}, $x["stateGroupStates"]);
+		$convertStateGroups = function($x) use ($convertedStates) {
+			$filteredStateGroupStates = array_filter($x["stateGroupStates"], function ($y) use ($convertedStates) {return in_array($y["stateGenID"], array_keys($convertedStates));});
+			$statesArray = array_map(function ($y) {return $y["stateGenID"];}, $filteredStateGroupStates);
 			return ["name" => $x["stateGroupName"], "states" => $statesArray];
 		};
 		$getKeys = function ($x) {
