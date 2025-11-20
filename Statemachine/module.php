@@ -119,7 +119,6 @@ class Statemachine extends IPSModule {
 		$states = json_decode($this->ReadAttributeString("states"), true);
 		$maxIndex = empty($states) ? 0 : max(array_keys($states));
 		$allDevicesEmptyList = array_map(function ($x) {return ["deviceID"=>$x, "value"=>""];}, json_decode($this->ReadAttributeString("devices"), true));
-		$this->LogMessage(json_encode($allDevicesEmptyList), 10204);
 		/*
 		 * has to be something like:
 		 * [
@@ -135,7 +134,22 @@ class Statemachine extends IPSModule {
 		 * 	], ....
 		 * ]
 		 */
-		$stateValues = [];
+		$stateValuesList = function ($state_vals) {
+			$devices_list = $allDevicesEmptyList;	// create a copy
+			foreach ($devices_list as &$dev) {
+				if (array_key_exists($dev["deviceID"], $state_vals)) {
+					$dev["value"] = $state_vals[$dev["deviceID"]];
+				}
+			}
+		};
+		$statesListMap = function ($id, $val) {
+			return [
+				"stateID" => $id,
+				"stateName" => $val["name"],
+				"stateValues" => $stateValuesList($val["values"])
+			];
+		};
+		$stateValues = array_map($statesListMap, array_keys($states), $states);
 		return [
 			"type" => "List",
 		        "name" => "statesList",
