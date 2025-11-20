@@ -228,10 +228,10 @@ class Statemachine extends IPSModule {
 			"rowCount" => 10,
 			"values" => $stateValues,
 			"loadValuesFromConfiguration" => false,
-			"onAdd" => "StateM_UpdateNextStateListIndex($id);",
-			"onChangeOrder" => "StateM_UpdateNextStateListIndex($id);",
-			"onDelete" => "StateM_UpdateNextStateListIndex($id);",
-			"onEdit" => "StateM_UpdateNextStateListIndex($id);"
+			"onAdd" => "StateM_UpdateNextStateListIndex(\$id);",
+			"onChangeOrder" => "StateM_UpdateNextStateListIndex(\$id);",
+			"onDelete" => "StateM_UpdateNextStateListIndex(\$id);",
+			"onEdit" => "StateM_UpdateNextStateListIndex(\$id);"
 		];
 	}
 	private function stategroupsListForm() {
