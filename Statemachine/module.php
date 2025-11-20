@@ -42,10 +42,11 @@ class Statemachine extends IPSModule {
 
 		// state List
 		$stateData = json_decode($this->ReadPropertyString("statesList"), true);
-		$convertStates = function($x) {
+		$convertStates = function($x) use($convertedIDs) {
+			$filteredStateValues = array_filter($x["stateValues"], function ($y) use($convertedIDs) {return in_array($y["deviceID"], $convertedIDs);});
 			$valuesArray = array_combine(
-				array_map(function ($y) {return $y["deviceID"];}, $x["stateValues"]),
-				array_map(function ($y) {return $y["devValue"];}, $x["stateValues"])
+				array_map(function ($y) {return $y["deviceID"];}, $filteredStateValues),
+				array_map(function ($y) {return $y["devValue"];}, $filteredStateValues)
 			);
 			return [ "name" => $x["stateName"], "values" => $valuesArray];
 		};
@@ -70,6 +71,7 @@ class Statemachine extends IPSModule {
 		$maxIndex = empty($states) ? 0 : max(array_map(function ($x) {return $x["stateID"];}, iterator_to_array($states)));
 		$this->UpdateFormField("statesList", "columns.0.add", $maxIndex+1);
 	}
+
 	/* 
 	 * private Form functions
 	 */
