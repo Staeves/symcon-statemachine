@@ -143,6 +143,7 @@ class Statemachine extends IPSModule {
 					$dev["value"] = $state_vals[$dev["deviceID"]];
 				}
 			}
+			return $devices_list;
 		};
 		$statesListMap = function ($id, $val) use($stateValuesList) {
 			return [
