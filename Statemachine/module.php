@@ -9,10 +9,12 @@ class Statemachine extends IPSModule {
 		// use atributes, so that we can alter and format them as we want
 		$this->RegisterAttributeString("devices", "[]");	// json encoded list of devices that are part of this Statemachine
 		$this->RegisterAttributeString("states", "[]");		// json encoded list of states each is [<genid> => ["id" => int, "name"=> string, "values" => [<instanceID> => Value]]]
+		$this->RegisterAttributeString("stateGroups", "[]");		// json encoded list of stateGroups each is [<genid> => ["name"=> string, "states" => [<stateGenID>]]]
 
 		// we need the prperty or the apply button will never show up if the list has a name :(
 		$this->RegisterPropertyString("devicesList", "[]");
 		$this->RegisterPropertyString("statesList", "[]");
+		$this->RegisterPropertyString("stateGroupsList", "[]");
 	}
 
 	// dynamic configurationform
@@ -27,7 +29,6 @@ class Statemachine extends IPSModule {
 			$this->transitionsListForm()
 		]];
 		$json = json_encode($res);
-		/*echo $json;*/
 		return $json;
 	}
 
@@ -57,8 +58,20 @@ class Statemachine extends IPSModule {
 		$convertedStates = array_combine(array_map($getKeys, $stateData), array_map($convertStates, $stateData));
 		$this->WriteAttributeString("states", json_encode($convertedStates));
 
+		// state group List
+		$stateGroupData = json_decode($this->ReadPropertyString("stateGroupsList"), true);
+		$convertStateGroups = function($x) {
+			$statesArray = array_map(function ($y) {return $y["stateGenID"];}, $x["stateGroupStates"]);
+			return ["name" => $x["stateGroupName"], "states" => $statesArray];
+		};
+		$getKeys = function ($x) {
+			return $x["stateGroupGenID"];
+		};
+		$convertedStateGroups = array_combine(array_map($getKeys, $stateGroupData), array_map($convertStateGroups, $stateGroupData));
+		$this->WriteAttributeString("stateGroups", json_encode($convertedStateGroups));
 
-		// Reload the form to make shre it is updated
+
+		// Reload the form to make shure it is updated
 		$this->ReloadForm();
 	}
 
@@ -76,6 +89,9 @@ class Statemachine extends IPSModule {
 		$maxIndex = empty($states) ? 0 : max(array_map(function ($x) {return $x["stateID"];}, iterator_to_array($states)));
 		$this->UpdateFormField("statesList", "columns.0.add", $maxIndex+1);
 		$this->UpdateFormField("statesList", "columns.3.add", uniqid("state-"));
+	}
+	public function UpdateNextStateGroupListIndex() : void {
+		$this->UpdateFormField("stateGroupsList", "columns.2.add", uniqid("group-"));
 	}
 
 	/* 
@@ -255,7 +271,99 @@ class Statemachine extends IPSModule {
 		];
 	}
 	private function stategroupsListForm() {
-		return ["type" => "Label", "caption" => "DUMMY"];
+		$stateGroups = json_decode($this->ReadAttributeString("stateGroups"), true);
+		/*
+		 * has to be something like:
+		 * [
+		 * 	[
+		 * 		"stateGroupGenID" => group-<id>,
+		 * 		"stateGroupName" => <name>,
+		 * 		"stateGroupStates" => [
+		 * 			[
+		 * 				"stateGenID" => xyz
+		 * 			], ...
+		 * 		]
+		 * 	], ....
+		 * ]
+		 */
+		$stateGroupStatesList = function ($stateGroupStates) {
+			return array_map(function ($x) {return ["stateGenID" => $x];}, $stateGroupStates);
+		};
+		$stateGroupsListMap = function ($genID, $val) use($stateGroupStatesList) {
+			return [
+				"stateGroupGenID" => $genID,
+				"stateGroupName" => $val["name"],
+				"stateGroupStates" => $stateGroupStatesList($val["states"]),
+			];
+		};
+		$stateGroupValues = array_map($stateGroupsListMap, array_keys($stateGroups), $stateGroups);
+		$states = json_decode($this->ReadAttributeString("states"), true);
+		$stateOptions = array_map(function ($genID, $val) {return ["value" => $genID, "caption" => ($val["id"] . " - " . $val["name"])];}, array_keys($states), $states);
+		return [
+			"type" => "List",
+		        "name" => "stateGroupsList",
+			"add" => true,
+			"caption" => "Zuständsgruppen",
+			"columns" => [
+				[
+					"add" => "NeueZustandsgruppe",
+					"caption" => "Name",
+					"edit" => [
+						"type" => "ValidationTextBox",
+						"validate" => "[a-zA-Z0-9]*"
+					],
+					"name" => "stateGroupName",
+					"quickFilter" => true,
+					"save" => true,
+					"width" => "auto"
+				],
+				[
+					"add" => [],
+					"caption" => "Zustände",
+					"edit" => [
+						"type" => "List",
+						"add" => true,
+						"columns" => [
+							[
+								"add" => "",
+								"caption" => "Zustand",
+								"name" => "stateGenID",
+								"edit" => [
+									"type" => "Select",
+									"options" => $stateOptions
+								],
+								"quickFilter" => true,
+								"save" => true,
+								"width" => "auto"
+							]
+						],
+						"delete" => true,
+						"loadValuesFromConfiguration" => true	// respect the values from the "outer" list
+					],
+					"name" => "stateGroupStates",
+					"quickFilter" => false,
+					"save" => true,
+					"width" => "300px"
+				], 
+				[
+					"add" => uniqid("state-"),
+					"caption" => "internal ID",
+					"name" => "stateGroupGenID",
+					"quickFilter" => false,
+					"save" => true,
+					"width" => "0px",
+					"visible" => false
+				]
+			],
+			"delete" => true,
+			"rowCount" => 10,
+			"values" => $stateGroupValues,
+			"loadValuesFromConfiguration" => false,
+			"onAdd" => "StateM_UpdateNextStateGroupListIndex(\$id);",
+			"onChangeOrder" => "StateM_UpdateNextStateGroupListIndex(\$id);",
+			"onDelete" => "StateM_UpdateNextStateGroupListIndex(\$id);",
+			"onEdit" => "StateM_UpdateNextStateGroupListIndex(\$id);"
+		];
 	}
 	private function triggerListFrom() {
 		return ["type" => "Label", "caption" => "DUMMY"];
