@@ -42,7 +42,7 @@ class Statemachine extends IPSModule {
 
 		// state List
 		$stateData = json_decode($this->ReadPropertyString("statesList"), true);
-		$this->LogMessage(json_encode($stateData, 10204));
+		$this->LogMessage(json_encode($stateData), 10204);
 		$convertStates = function($x) {
 			$valuesArray = array_combine(
 				array_map(function ($y) {return $y["deviceID"];}, $x["stateValues"]),
