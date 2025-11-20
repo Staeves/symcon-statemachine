@@ -151,6 +151,7 @@ class Statemachine extends IPSModule {
 			];
 		};
 		$stateValues = array_map($statesListMap, array_keys($states), $states);
+		$this->LogMessage(json_encode($stateValues), 10204);
 		return [
 			"type" => "List",
 		        "name" => "statesList",
