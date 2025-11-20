@@ -67,8 +67,7 @@ class Statemachine extends IPSModule {
 		// update devices list in the settings
 		$this->UpdateFormField("devicesList", "values", json_encode($this->devicesAsListValues($devices)));
 	}
-	public function UpdateNextStateListIndex($values) : void {
-		$states = json_decode($values, true);
+	public function UpdateNextStateListIndex($states) : void {
 		$maxIndex = empty($states) ? 0 : max(array_map(function ($x) {return $x["stateID"];}, $states));
 		$this->UpdateFormField("statesList", "columns.0.add", $maxIndex+1);
 	}
