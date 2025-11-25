@@ -378,6 +378,7 @@ class Statemachine extends IPSModule {
 		 * optionally it can have an script, that can function as a condition
 		 */
 		$triggerValues = $this->ReadAttributeString("triggers");
+		echo $triggerValues;
 		return [
 			"type" => "List",
 		        "name" => "triggersList",
@@ -447,7 +448,7 @@ class Statemachine extends IPSModule {
 			],
 			"delete" => true,
 			"rowCount" => 10,
-			"values" => [],
+			"values" => $triggerValues,
 			"loadValuesFromConfiguration" => false
 		];
 	}
