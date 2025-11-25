@@ -527,7 +527,7 @@ class Statemachine extends IPSModule {
 			],
 			"delete" => true,
 			"rowCount" => 10,
-			"values" => $transitionValues,
+			"values" => $transitions,
 			"loadValuesFromConfiguration" => false
 		];
 	}
