@@ -74,7 +74,7 @@ class Statemachine extends IPSModule {
 		$this->WriteAttributeString("stateGroups", json_encode($convertedStateGroups));
 
 		// triggers List
-		$this->WriteAttributeString("triggers", $this->ReadAttributeString("triggersList"));
+		$this->WriteAttributeString("triggers", $this->ReadPropertyString("triggersList"));
 
 		// Reload the form to make shure it is updated
 		$this->ReloadForm();
