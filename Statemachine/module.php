@@ -10,11 +10,13 @@ class Statemachine extends IPSModule {
 		$this->RegisterAttributeString("devices", "[]");	// json encoded list of devices that are part of this Statemachine
 		$this->RegisterAttributeString("states", "[]");		// json encoded list of states each is [<genid> => ["id" => int, "name"=> string, "values" => [<instanceID> => Value]]]
 		$this->RegisterAttributeString("stateGroups", "[]");		// json encoded list of stateGroups each is [<genid> => ["name"=> string, "states" => [<stateGenID>]]]
+		$this->RegisterAttributeString("triggers", "[]");	// stored as found in the triggers list
 
 		// we need the prperty or the apply button will never show up if the list has a name :(
 		$this->RegisterPropertyString("devicesList", "[]");
 		$this->RegisterPropertyString("statesList", "[]");
 		$this->RegisterPropertyString("stateGroupsList", "[]");
+		$this->RegisterPropertyString("triggersList", "[]");
 	}
 
 	// dynamic configurationform
@@ -71,6 +73,8 @@ class Statemachine extends IPSModule {
 		$convertedStateGroups = array_combine(array_map($getKeys, $stateGroupData), array_map($convertStateGroups, $stateGroupData));
 		$this->WriteAttributeString("stateGroups", json_encode($convertedStateGroups));
 
+		// triggers List
+		$this->WriteAttributeString("triggers", $this->ReadAttributeString("triggersList"));
 
 		// Reload the form to make shure it is updated
 		$this->ReloadForm();
@@ -367,7 +371,85 @@ class Statemachine extends IPSModule {
 		];
 	}
 	private function triggerListFrom() {
-		return ["type" => "Label", "caption" => "DUMMY"];
+		/*
+		 * events that trigger triggers are setup from the object tree, and with execute advanced instance function, passing the name of the trigger
+		 * each trigger has to have a name
+		 * optionally it can have entries in the list with variable ids, that trigger on update or on change
+		 * optionally it can have an script, that can function as a condition
+		 */
+		$triggerValues = $this->ReadAttributeString("triggers");
+		return [
+			"type" => "List",
+		        "name" => "triggerList",
+			"add" => true,
+			"caption" => "Auslöser",
+			"columns" => [
+				[
+					"add" => "NeuerAusloesser",
+					"caption" => "Name",
+					"edit" => [
+						"type" => "ValidationTextBox",
+						"validate" => "[a-zA-Z0-9]*"
+					],
+					"name" => "triggerName",
+					"quickFilter" => true,
+					"save" => true,
+					"width" => "auto"
+				],
+				[
+					"add" => [],
+					"caption" => "Variablen",
+					"edit" => [
+						"type" => "List",
+						"add" => true,
+						"columns" => [
+							[
+								"add" => 0,
+								"caption" => "Variable",
+								"name" => "variable",
+								"edit" => [
+									"type" => "SelectVariable"
+								],
+								"quickFilter" => true,
+								"save" => true,
+								"width" => "auto"
+							],
+							[
+								"add" => 0,
+								"caption" => "Auslösung",
+								"name" => "variableTriggerType",
+								"edit" => [
+									"type" => "Select",
+									"options" => [
+										[
+											"caption" => "Beim aktualisieren",
+											"value" => 0
+										],
+										[
+											"caption" => "Bei neuem Wert",
+											"value" => 1
+										]
+									]
+								],
+								"quickFilter" => false,
+								"save" => true,
+								"width" => "300px"
+							]
+						],
+						"delete" => true,
+						"loadValuesFromConfiguration" => true	// respect the values from the "outer" list
+					],
+					"name" => "instanceTriggers",
+					"quickFilter" => false,
+					"save" => true,
+					"width" => "300px"
+				]
+			],
+			"delete" => true,
+			"rowCount" => 10,
+			"values" => $triggerValues,
+			"loadValuesFromConfiguration" => false
+		];
 	}
 	private function transitionsListForm() {
 		return ["type" => "Label", "caption" => "DUMMY"];
