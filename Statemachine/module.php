@@ -447,7 +447,7 @@ class Statemachine extends IPSModule {
 			],
 			"delete" => true,
 			"rowCount" => 10,
-			"values" => $triggerValues,
+			"values" => [],
 			"loadValuesFromConfiguration" => false
 		];
 	}
