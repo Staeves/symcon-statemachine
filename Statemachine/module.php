@@ -479,7 +479,7 @@ class Statemachine extends IPSModule {
 		$stateOptions = array_map(function ($genID, $val) {return ["value" => $genID, "caption" => ($val["id"] . " - " . $val["name"])];}, array_keys($states), $states);
 		$stateGroups = json_decode($this->ReadAttributeString("stateGroups"), true);
 		$stateGroupOptions = array_map(function ($genID, $val) {return ["value" => $genID, "caption" => ("Gruppe - " . $val["name"])];}, array_keys($stateGroups), $stateGroups);
-		$stateAndStateGroupOptions = array_merge($stateGroups, $stateGroupOptions);
+		$stateAndStateGroupOptions = array_merge($stateOptions, $stateGroupOptions);
 		$this->LogMessage(json_encode($stateOptions), 10204);
 		$this->LogMessage(json_encode($stateGroupOptions), 10204);
 		$this->LogMessage(json_encode($stateAndStateGroupOptions), 10204);
