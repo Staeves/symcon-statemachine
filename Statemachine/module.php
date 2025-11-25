@@ -448,7 +448,7 @@ class Statemachine extends IPSModule {
 					"add" => "// crazy script",
 					"caption" => "Bedingungen Skript",
 					"edit" => [
-						"validate" => "[a-zA-Z0-9]*"
+						"type" => "ScriptEditor"
 					],
 					"name" => "triggerScript",
 					"quickFilter" => false,
