@@ -41,6 +41,24 @@ class Statemachine extends IPSModule {
 		// Don't delete this line
 		parent::ApplyChanges();
 
+		
+		// remove old messages and references
+		foreach ($this->GetMessageList() as $senderID => $messages) {
+			foreach ($messages as $message) {
+				$this->UnregisterMessage($senderID, $message);
+			}
+		}
+		foreach ($this->GetReferenceList() as $reference) {
+			$this->UnregisterReference($reference);
+		}
+
+		// add new mesages for testing
+		$in_var = 25433;
+		if (IPS_VariableExists($in_var)) {
+			$this->RegisterMessage($in_var, VM_UPDATE);
+			$this->RegisterReference($in_var);
+		}
+
 		// device list
 		$rawIDs = json_decode($this->ReadPropertyString("devicesList"), true);
 		$convertedIDs = array_map(function ($x) {return $x["deviceID"];}, $rawIDs);
@@ -83,6 +101,9 @@ class Statemachine extends IPSModule {
 	}
 
 	public function RequestAction ($Ident, $Value) : void {
+	}
+	public function MessageSink (int $Zeitstempel, int $SenderID, int $NachrichtID, array $Daten) : void {
+		$this->LogMessage($Zeitstempel. $SenderID . $NachrichtID . json_encode($Daten), 10204);
 	}
 
 	public function AddDevices(int $parentID) : void {
