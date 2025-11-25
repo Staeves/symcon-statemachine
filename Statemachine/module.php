@@ -472,7 +472,7 @@ class Statemachine extends IPSModule {
 		];
 	}
 	private function transitionsListForm() {
-		$transitions = json_decode($this->ReadAttributeString("transitions"), true);
+		/*$transitions = json_decode($this->ReadAttributeString("transitions"), true);
 		$states = json_decode($this->ReadAttributeString("states"), true);
 		$stateOptions = array_map(function ($genID, $val) {return ["value" => $genID, "caption" => ($val["id"] . " - " . $val["name"])];}, array_keys($states), $states);
 		$stateGroups = json_decode($this->ReadAttributeString("stateGroups"), true);
