@@ -380,7 +380,7 @@ class Statemachine extends IPSModule {
 		$triggerValues = $this->ReadAttributeString("triggers");
 		return [
 			"type" => "List",
-		        "name" => "triggerList",
+		        "name" => "triggersList",
 			"add" => true,
 			"caption" => "Auslöser",
 			"columns" => [
