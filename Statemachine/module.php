@@ -522,7 +522,7 @@ class Statemachine extends IPSModule {
 					"name" => "transitionTrigger",
 					"quickFilter" => true,
 					"save" => true,
-					"width" => "300px"
+					"width" => "auto"
 				]
 			],
 			"delete" => true,
