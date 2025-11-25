@@ -443,6 +443,17 @@ class Statemachine extends IPSModule {
 					"quickFilter" => false,
 					"save" => true,
 					"width" => "300px"
+				],
+				[
+					"add" => "// crazy script",
+					"caption" => "Bedingungen Skript",
+					"edit" => [
+						"validate" => "[a-zA-Z0-9]*"
+					],
+					"name" => "triggerScript",
+					"quickFilter" => false,
+					"save" => true,
+					"width" => "500px"
 				]
 			],
 			"delete" => true,
