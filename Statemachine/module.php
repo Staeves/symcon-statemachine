@@ -480,6 +480,7 @@ class Statemachine extends IPSModule {
 		$stateGroups = json_decode($this->ReadAttributeString("stateGroups"), true);
 		$stateGroupOptions = array_map(function ($genID, $val) {return ["value" => $genID, "caption" => ("Gruppe - " . $val["name"])];}, array_keys($stateGroups), $stateGroups);
 		$stateAndStateGroupOptions = array_merge($stateGroups, $stateGroupOptions);
+		echo json_encode($stateAndStateGroupOptions);
 		$triggers = json_decode($this->ReadAttributeString("triggers"), true);
 		$triggerOptions = array_map(function($val) {return ["value" => $val["triggerGenID"], "caption" => $val["triggerName"]];}, $triggers);
 		return [
@@ -493,7 +494,7 @@ class Statemachine extends IPSModule {
 					"caption" => "Startzustand",
 					"edit" => [
 						"type" => "Select",
-						"options" => $stateGroupOptions
+						"options" => $stateAndStateGroupOptions
 					],
 					"name" => "transitionStart",
 					"quickFilter" => true,
