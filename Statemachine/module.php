@@ -103,7 +103,7 @@ class Statemachine extends IPSModule {
 	public function RequestAction ($Ident, $Value) : void {
 	}
 	public function MessageSink ($TimeStamp, $SenderID, $MessageID, $Data) : void {
-		$this->LogMessage($Zeitstempel. $SenderID . $NachrichtID . json_encode($Daten), 10204);
+		$this->LogMessage($TimeStamp . $SenderID . $MessageID . json_encode($Data), 10204);
 	}
 
 	public function AddDevices(int $parentID) : void {
