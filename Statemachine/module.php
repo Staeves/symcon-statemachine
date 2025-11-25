@@ -351,7 +351,7 @@ class Statemachine extends IPSModule {
 					"width" => "300px"
 				], 
 				[
-					"add" => uniqid("state-"),
+					"add" => uniqid("stateGroup-"),
 					"caption" => "internal ID",
 					"name" => "stateGroupGenID",
 					"quickFilter" => false,
@@ -454,6 +454,15 @@ class Statemachine extends IPSModule {
 					"quickFilter" => false,
 					"save" => true,
 					"width" => "500px"
+				],
+				[
+					"add" => uniqid("trigger-"),
+					"caption" => "internal ID",
+					"name" => "triggerGenID",
+					"quickFilter" => false,
+					"save" => true,
+					"width" => "0px",
+					"visible" => false
 				]
 			],
 			"delete" => true,
@@ -463,7 +472,79 @@ class Statemachine extends IPSModule {
 		];
 	}
 	private function transitionsListForm() {
-		return ["type" => "Label", "caption" => "DUMMY"];
+		$transitions = json_decode($this->ReadAttributeString("transitions"), true);
+		$states = json_decode($this->ReadAttributeString("states"), true);
+		$stateOptions = array_map(function ($genID, $val) {return ["value" => $genID, "caption" => ($val["id"] . " - " . $val["name"])];}, array_keys($states), $states);
+		$stateGroups = json_decode($this->ReadAttributeString("stateGroups"), true);
+		$stateGroupOptions = array_map(function ($genID, $val) {return ["value" => $genID, "caption" => ("Gruppe - " . $val["name"])];}, array_keys($stateGroups), $stateGroups);
+		$stateAndStateGroupOptions = array_merge($stateGroups, $stateGroupOptions);
+		/*$triggers = json_decode($this->
+		return [
+			"type" => "List",
+		        "name" => "stateGroupsList",
+			"add" => true,
+			"caption" => "Zuständsgruppen",
+			"columns" => [
+				[
+					"add" => "NeueZustandsgruppe",
+					"caption" => "Name",
+					"edit" => [
+						"type" => "ValidationTextBox",
+						"validate" => "[a-zA-Z0-9]*"
+					],
+					"name" => "stateGroupName",
+					"quickFilter" => true,
+					"save" => true,
+					"width" => "auto"
+				],
+				[
+					"add" => [],
+					"caption" => "Zustände",
+					"edit" => [
+						"type" => "List",
+						"add" => true,
+						"columns" => [
+							[
+								"add" => "",
+								"caption" => "Zustand",
+								"name" => "stateGenID",
+								"edit" => [
+									"type" => "Select",
+									"options" => $stateOptions
+								],
+								"quickFilter" => true,
+								"save" => true,
+								"width" => "auto"
+							]
+						],
+						"delete" => true,
+						"loadValuesFromConfiguration" => true	// respect the values from the "outer" list
+					],
+					"name" => "stateGroupStates",
+					"quickFilter" => false,
+					"save" => true,
+					"width" => "300px"
+				], 
+				[
+					"add" => uniqid("state-"),
+					"caption" => "internal ID",
+					"name" => "stateGroupGenID",
+					"quickFilter" => false,
+					"save" => true,
+					"width" => "0px",
+					"visible" => false
+				]
+			],
+			"delete" => true,
+			"rowCount" => 10,
+			"values" => $stateGroupValues,
+			"loadValuesFromConfiguration" => false,
+			"onAdd" => "StateM_UpdateNextStateGroupListIndex(\$id);",
+			"onChangeOrder" => "StateM_UpdateNextStateGroupListIndex(\$id);",
+			"onDelete" => "StateM_UpdateNextStateGroupListIndex(\$id);",
+			"onEdit" => "StateM_UpdateNextStateGroupListIndex(\$id);"
+		];*/
+		return ["type" => "ScriptEditor"];
 	}
 
 	private function devicesAsListValues($deviceList) {
