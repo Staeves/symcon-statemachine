@@ -11,12 +11,14 @@ class Statemachine extends IPSModule {
 		$this->RegisterAttributeString("states", "[]");		// json encoded list of states each is [<genid> => ["id" => int, "name"=> string, "values" => [<instanceID> => Value]]]
 		$this->RegisterAttributeString("stateGroups", "[]");		// json encoded list of stateGroups each is [<genid> => ["name"=> string, "states" => [<stateGenID>]]]
 		$this->RegisterAttributeString("triggers", "[]");	// stored as found in the triggers list
+		$this->RegisterAttributeString("transitions", "[]");	// stored as found in the transitions list
 
 		// we need the prperty or the apply button will never show up if the list has a name :(
 		$this->RegisterPropertyString("devicesList", "[]");
 		$this->RegisterPropertyString("statesList", "[]");
 		$this->RegisterPropertyString("stateGroupsList", "[]");
 		$this->RegisterPropertyString("triggersList", "[]");
+		$this->RegisterPropertyString("transitionsList", "[]");
 	}
 
 	// dynamic configurationform
@@ -472,79 +474,62 @@ class Statemachine extends IPSModule {
 		];
 	}
 	private function transitionsListForm() {
-		/*$transitions = json_decode($this->ReadAttributeString("transitions"), true);
+		$transitions = json_decode($this->ReadAttributeString("transitions"), true);
 		$states = json_decode($this->ReadAttributeString("states"), true);
 		$stateOptions = array_map(function ($genID, $val) {return ["value" => $genID, "caption" => ($val["id"] . " - " . $val["name"])];}, array_keys($states), $states);
 		$stateGroups = json_decode($this->ReadAttributeString("stateGroups"), true);
 		$stateGroupOptions = array_map(function ($genID, $val) {return ["value" => $genID, "caption" => ("Gruppe - " . $val["name"])];}, array_keys($stateGroups), $stateGroups);
 		$stateAndStateGroupOptions = array_merge($stateGroups, $stateGroupOptions);
-		/*$triggers = json_decode($this->
+		$triggers = json_decode($this->ReadAttributeString("triggers"), true);
+		$triggerOptions = array_map(function($val) {return ["value" => $val["triggerGenID"], "caption" => $val["triggerName"]];}, $triggers);
 		return [
 			"type" => "List",
-		        "name" => "stateGroupsList",
+		        "name" => "transitionsList",
 			"add" => true,
-			"caption" => "Zuständsgruppen",
+			"caption" => "Zuständsübergänge",
 			"columns" => [
 				[
-					"add" => "NeueZustandsgruppe",
-					"caption" => "Name",
+					"add" => "",
+					"caption" => "Startzustand",
 					"edit" => [
-						"type" => "ValidationTextBox",
-						"validate" => "[a-zA-Z0-9]*"
+						"type" => "Select",
+						"options" => $stateAndStateGroupOptions
 					],
-					"name" => "stateGroupName",
+					"name" => "transitionStart",
 					"quickFilter" => true,
 					"save" => true,
-					"width" => "auto"
+					"width" => "300px"
 				],
 				[
-					"add" => [],
-					"caption" => "Zustände",
+					"add" => "",
+					"caption" => "Zielzustand",
 					"edit" => [
-						"type" => "List",
-						"add" => true,
-						"columns" => [
-							[
-								"add" => "",
-								"caption" => "Zustand",
-								"name" => "stateGenID",
-								"edit" => [
-									"type" => "Select",
-									"options" => $stateOptions
-								],
-								"quickFilter" => true,
-								"save" => true,
-								"width" => "auto"
-							]
-						],
-						"delete" => true,
-						"loadValuesFromConfiguration" => true	// respect the values from the "outer" list
+						"type" => "Select",
+						"options" => $stateOptions
 					],
-					"name" => "stateGroupStates",
-					"quickFilter" => false,
+					"name" => "transitionEnd",
+					"quickFilter" => true,
 					"save" => true,
 					"width" => "300px"
-				], 
+				],
 				[
-					"add" => uniqid("state-"),
-					"caption" => "internal ID",
-					"name" => "stateGroupGenID",
-					"quickFilter" => false,
+					"add" => "",
+					"caption" => "Auslöser",
+					"edit" => [
+						"type" => "Select",
+						"options" => $triggerOptions
+					],
+					"name" => "transitionTrigger",
+					"quickFilter" => true,
 					"save" => true,
-					"width" => "0px",
-					"visible" => false
+					"width" => "300px"
 				]
 			],
 			"delete" => true,
 			"rowCount" => 10,
-			"values" => $stateGroupValues,
-			"loadValuesFromConfiguration" => false,
-			"onAdd" => "StateM_UpdateNextStateGroupListIndex(\$id);",
-			"onChangeOrder" => "StateM_UpdateNextStateGroupListIndex(\$id);",
-			"onDelete" => "StateM_UpdateNextStateGroupListIndex(\$id);",
-			"onEdit" => "StateM_UpdateNextStateGroupListIndex(\$id);"
-		];*/
-		return ["type" => "ScriptEditor"];
+			"values" => $transitionValues,
+			"loadValuesFromConfiguration" => false
+		];
 	}
 
 	private function devicesAsListValues($deviceList) {
