@@ -493,7 +493,7 @@ class Statemachine extends IPSModule {
 					"caption" => "Startzustand",
 					"edit" => [
 						"type" => "Select",
-						"options" => $stateAndStateGroupOptions
+						"options" => $stateGroupOptions
 					],
 					"name" => "transitionStart",
 					"quickFilter" => true,
