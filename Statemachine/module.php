@@ -53,7 +53,7 @@ class Statemachine extends IPSModule {
 		}
 
 		// add new mesages for testing
-		$in_var = 25433;
+		$in_var = 11706;
 		if (IPS_VariableExists($in_var)) {
 			$this->RegisterMessage($in_var, VM_UPDATE);
 			$this->RegisterReference($in_var);
