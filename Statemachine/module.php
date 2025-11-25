@@ -377,7 +377,7 @@ class Statemachine extends IPSModule {
 		 * optionally it can have entries in the list with variable ids, that trigger on update or on change
 		 * optionally it can have an script, that can function as a condition
 		 */
-		$triggerValues = $this->ReadAttributeString("triggers");
+		$triggerValues = json_decode($this->ReadAttributeString("triggers"), true);
 		echo $triggerValues;
 		return [
 			"type" => "List",
