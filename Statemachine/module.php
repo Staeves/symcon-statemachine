@@ -247,7 +247,7 @@ class Statemachine extends IPSModule {
 		}
 		foreach ($data as $key => $value) {
 			$combinedValue = array_combine($value["fromGroup"], $value["fromState"]);	// fromState takes precedence for same trigger
-			$this->SetBuffer($key, json_encode($combinedValue);
+			$this->SetBuffer($key, json_encode($combinedValue));
 		}
 	}
 
