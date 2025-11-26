@@ -103,7 +103,7 @@ class Statemachine extends IPSModule {
 			foreach ($trigger["instanceTriggers"] as $inst) {
 				$id = $inst["variable"];
 				if (!in_array($id, $added_ids)) {
-					if (IPS_VariableExists($in_var) and ) {
+					if (IPS_VariableExists($in_var)) {
 						$this->RegisterMessage($in_var, VM_UPDATE);
 						$this->RegisterReference($in_var);
 					}
