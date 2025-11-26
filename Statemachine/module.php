@@ -99,7 +99,7 @@ class Statemachine extends IPSModule {
 
 		// set up messages for all triggers, that listen to a variable
 		$added_ids = [];
-		foreach ($triggers as $trigger) {
+		foreach (json_decode($triggers, true) as $trigger) {
 			foreach ($trigger["instanceTriggers"] as $inst) {
 				$id = $inst["variable"];
 				if (!in_array($id, $added_ids)) {
