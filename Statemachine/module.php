@@ -13,6 +13,8 @@ class Statemachine extends IPSModule {
 		$this->RegisterAttributeString("triggers", "[]");	// stored as found in the triggers list
 		$this->RegisterAttributeString("transitions", "[]");	// stored as found in the transitions list
 
+		$this->RegisterAttributeString("activeState", "");	// GenID of the active State. IF not a valide state set it to the First STate in the list on applyChanges
+
 		// we need the prperty or the apply button will never show up if the list has a name :(
 		$this->RegisterPropertyString("devicesList", "[]");
 		$this->RegisterPropertyString("statesList", "[]");
@@ -52,13 +54,6 @@ class Statemachine extends IPSModule {
 			$this->UnregisterReference($reference);
 		}
 
-		// add new mesages for testing
-		$in_var = 11706;
-		if (IPS_VariableExists($in_var)) {
-			$this->RegisterMessage($in_var, VM_UPDATE);
-			$this->RegisterReference($in_var);
-		}
-
 		// device list
 		$rawIDs = json_decode($this->ReadPropertyString("devicesList"), true);
 		$convertedIDs = array_map(function ($x) {return $x["deviceID"];}, $rawIDs);
@@ -79,6 +74,11 @@ class Statemachine extends IPSModule {
 		};
 		$convertedStates = array_combine(array_map($getKeys, $stateData), array_map($convertStates, $stateData));
 		$this->WriteAttributeString("states", json_encode($convertedStates));
+		// if not set to a valide value set active State to the first state
+		$activeState = $this->GetAttributeString("activeState");
+		if (!array_key_exists($activeState, $convertedStates)) {
+			$this->WriteAttributeString("activeState", array_keys($convertedStates)[0]);
+		}
 
 		// state group List
 		$stateGroupData = json_decode($this->ReadPropertyString("stateGroupsList"), true);
@@ -94,16 +94,42 @@ class Statemachine extends IPSModule {
 		$this->WriteAttributeString("stateGroups", json_encode($convertedStateGroups));
 
 		// triggers List
-		$this->WriteAttributeString("triggers", $this->ReadPropertyString("triggersList"));
+		$triggers = $this->ReadPropertyString("triggersList")
+		$this->WriteAttributeString("triggers", $triggers);
+
+		// set up messages for all triggers, that listen to a variable
+		$added_ids = [];
+		foreach ($triggers as $trigger) {
+			foreach ($trigger["instanceTriggers"] as $inst) {
+				$id = $inst["variable"];
+				if (!in_array($id, $added_ids)) {
+					if (IPS_VariableExists($in_var) and ) {
+						$this->RegisterMessage($in_var, VM_UPDATE);
+						$this->RegisterReference($in_var);
+					}
+					array_push($added_ids, $id);
+				}
+			}
+		}
 
 		// transitions List
 		$this->WriteAttributeString("transitions", $this->ReadPropertyString("transitionsList"));
+
+		// update the buffers
+		$this->SetupBuffers();
 	}
 
 	public function RequestAction ($Ident, $Value) : void {
 	}
+
 	public function MessageSink ($TimeStamp, $SenderID, $MessageID, $Data) : void {
-		$this->LogMessage($TimeStamp . $SenderID . $MessageID . print_r($Data, true), 10204);
+		//$this->LogMessage($TimeStamp . $SenderID . $MessageID . print_r($Data, true), 10204);
+		// for variable update: $Data is array with 6 elements [0]: new value; [1]: has the values changed; [2]: old value; [3-5] time stamps
+	}
+
+	public function Trigger (string $TriggerName) : void {
+		$activeState = $this->ReadAttributeString("activeState");
+		$this->intTrigger($triggerName, $activeState);
 	}
 
 	public function AddDevices(int $parentID) : void {
@@ -121,6 +147,109 @@ class Statemachine extends IPSModule {
 	public function UpdateNextStateGroupListIndex() : void {
 		$this->UpdateFormField("stateGroupsList", "columns.2.add", uniqid("group-"));
 	}
+
+	/*
+	 * private functions
+	 */
+	private function intTrigger($trigger, $activeState) {
+		// run the trigger Script
+		$scriptRes = IPS_RunScriptTextWait($this->GetBufferSave("triggerScript-" . $trigger));
+		$res = strtolower(trim($scriptRes));
+		if ($res == "true") {
+			// continue execution
+		} elseif ($res == "false") {
+			return;
+		} else {
+			$message = "TriggerScript returned unecpected response, expected true/false but got: " . $scriptRes;
+			$this->LogMessage($mesage, 10205);
+			echo $message;
+			return;
+		}
+		// find new State
+		$outgoing = $this->GetBufferSave($activeState);
+		if ($outgoing == "") {
+			// state has no outgoing transitions
+			return;
+		}
+		$outgoing = json_decode($outgoing, true);
+		if (array_key_exists($trigger, $outgoing)) {
+			$this->SwitchToState($outgoing[$trigger]);
+		}
+	}
+
+	private function ActivateState($stateGenID) {
+		$this->WriteAttributeString("activeState", $stateGenID);
+		$states = json_decode($this->ReadAttributeString("states"), true);
+		$vals = $states[$stateGenID]["values"];
+		foreach ($vals as $instID => $value) {
+			SetValue($instID, $value);	// ips set value function
+		}
+	}
+
+	// return buffer name, and set up the buffers, if they are not
+	private function GetBufferSave($name) {
+		$res = $this->GetBuffer($name);
+		if ($res == "") {
+			$this->SetupBuffers();
+			$res = $this->GetBuffer($name);
+		}
+		return $res;
+	}
+	private function SetupBuffers() {
+		// inst-<ipsID> Buffers and triggerScript-<ScriptName>
+		$data = [];
+		foreach (json_decode($this->ReadAttributeString("triggers")) as $trigger) {
+			foreach ($trigger["instanceTriggers"] as $inst) {
+				$key = "inst-" . $inst["variable"];
+				if (!array_key_exists($key, $data)) {
+					$data[$key] = ["onUpdate" => [], "onChange" => []];
+				}
+				if ($inst["varaibleTriggerType"] == 0) {
+					array_push($data[$key]["onUpdate"], $trigger["triggerName"]);
+				} else {
+					array_push($data[$key]["onUpdate"], $trigger["triggerName"]);
+				}
+			}
+			$this->SetBuffer("triggerScript-" . $trigger["triggerName"], $trigger["triggerScript"]);
+		}
+		foreach ($data as $key => $value) {
+			$this->SetBuffer($key, json_encode($value));
+		}
+
+		// <stateGenID> Buffers; each array for trigger name to newState
+		$data = [];
+		foreach (json_decode($this->ReadAttributeString("transitions")) as $transition) {
+			$start = $transition["transitionStart"];
+			$trigger = $transition["transitionTrigger"];
+			if (!array_key_exists($start, $data)) {
+				$data[$start] = ["fromState" => [], "fromGroup" => []];		// to be able to detect double assignments
+			}
+			if (str_starts_with($start, "state-")) {
+				if (!array_key_exists($trigger, $data[$start]["fromState"])) {
+					$data[$start]["fromState"][$trigger] = $transition["transitionEnd"];
+				} else {
+					$problemState = json_decode($this->ReadAttributeString("states"))[$start];
+					$this->LogMessage("Zustandsautomat hat mindestens zwei Zustandsübergänge mit dem selben Trigger aus Zustand " . $problemState, 10205);
+				}
+			} else {
+				// iterate through all states in the state Group
+				$stateList = json_decode($this->ReadAttributeString("stateGroups"), true)[$start]["states"];
+				foreach ($stateList as $state) {
+					if (!array_key_exists($trigger, $data[$state]["fromGroup"])) {
+						$data[$state]["fromGroup"][$trigger] = $transition["transitionEnd"];
+					} else {
+						$problemState = json_decode($this->ReadAttributeString("states"))[$state];
+						$this->LogMessage("Zustandsautomat hat mindestens zwei Zustandsübergänge mit dem selben Trigger aus Zustand " . $problemState . " durch eine oder mehrere Zustandsgruppen", 10205);
+					}
+				}
+			}
+		}
+		foreach ($data as $key => $value) {
+			$combinedValue = array_combine($value["fromGroup"], $value["fromState"]);	// fromState takes precedence for same trigger
+			$this->SetBuffer($key, json_encode($combinedValue);
+		}
+	}
+
 
 	/* 
 	 * private Form functions
