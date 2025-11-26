@@ -199,7 +199,7 @@ class Statemachine extends IPSModule {
 	private function SetupBuffers() {
 		// inst-<ipsID> Buffers and triggerScript-<ScriptName>
 		$data = [];
-		foreach (json_decode($this->ReadAttributeString("triggers")) as $trigger) {
+		foreach (json_decode($this->ReadAttributeString("triggers"), true) as $trigger) {
 			foreach ($trigger["instanceTriggers"] as $inst) {
 				$key = "inst-" . $inst["variable"];
 				if (!array_key_exists($key, $data)) {
@@ -219,7 +219,7 @@ class Statemachine extends IPSModule {
 
 		// <stateGenID> Buffers; each array for trigger name to newState
 		$data = [];
-		foreach (json_decode($this->ReadAttributeString("transitions")) as $transition) {
+		foreach (json_decode($this->ReadAttributeString("transitions"), true) as $transition) {
 			$start = $transition["transitionStart"];
 			$trigger = $transition["transitionTrigger"];
 			if (!array_key_exists($start, $data)) {
