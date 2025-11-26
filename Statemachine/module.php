@@ -176,7 +176,7 @@ class Statemachine extends IPSModule {
 		}
 		$outgoing = json_decode($outgoing, true);
 		if (array_key_exists($trigger, $outgoing)) {
-			$this->SwitchToState($outgoing[$trigger]);
+			$this->ActivateState($outgoing[$trigger]);
 		}
 	}
 
