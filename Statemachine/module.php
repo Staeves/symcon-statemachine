@@ -75,7 +75,7 @@ class Statemachine extends IPSModule {
 		$convertedStates = array_combine(array_map($getKeys, $stateData), array_map($convertStates, $stateData));
 		$this->WriteAttributeString("states", json_encode($convertedStates));
 		// if not set to a valide value set active State to the first state
-		$activeState = $this->GetAttributeString("activeState");
+		$activeState = $this->ReadAttributeString("activeState");
 		if (!array_key_exists($activeState, $convertedStates)) {
 			$this->WriteAttributeString("activeState", array_keys($convertedStates)[0]);
 		}
