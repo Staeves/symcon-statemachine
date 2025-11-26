@@ -94,7 +94,7 @@ class Statemachine extends IPSModule {
 		$this->WriteAttributeString("stateGroups", json_encode($convertedStateGroups));
 
 		// triggers List
-		$triggers = $this->ReadPropertyString("triggersList")
+		$triggers = $this->ReadPropertyString("triggersList");
 		$this->WriteAttributeString("triggers", $triggers);
 
 		// set up messages for all triggers, that listen to a variable
