@@ -184,6 +184,7 @@ class Statemachine extends IPSModule {
 		foreach ($vals as $instID => $value) {
 			SetValue($instID, $value);	// ips set value function
 		}
+
 	}
 
 	// return buffer name, and set up the buffers, if they are not
