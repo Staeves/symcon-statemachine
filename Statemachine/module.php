@@ -222,10 +222,10 @@ class Statemachine extends IPSModule {
 		foreach (json_decode($this->ReadAttributeString("transitions"), true) as $transition) {
 			$start = $transition["transitionStart"];
 			$trigger = $transition["transitionTrigger"];
-			if (!array_key_exists($start, $data)) {
-				$data[$start] = ["fromState" => [], "fromGroup" => []];		// to be able to detect double assignments
-			}
 			if (str_starts_with($start, "state-")) {
+				if (!array_key_exists($start, $data)) {
+					$data[$start] = ["fromState" => [], "fromGroup" => []];		// to be able to detect double assignments
+				}
 				if (!array_key_exists($trigger, $data[$start]["fromState"])) {
 					$data[$start]["fromState"][$trigger] = $transition["transitionEnd"];
 				} else {
@@ -236,6 +236,9 @@ class Statemachine extends IPSModule {
 				// iterate through all states in the state Group
 				$stateList = json_decode($this->ReadAttributeString("stateGroups"), true)[$start]["states"];
 				foreach ($stateList as $state) {
+					if (!array_key_exists($state, $data)) {
+						$data[$state] = ["fromState" => [], "fromGroup" => []];		// to be able to detect double assignments
+					}
 					if (!array_key_exists($trigger, $data[$state]["fromGroup"])) {
 						$data[$state]["fromGroup"][$trigger] = $transition["transitionEnd"];
 					} else {
