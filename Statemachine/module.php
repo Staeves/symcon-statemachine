@@ -200,7 +200,8 @@ class Statemachine extends IPSModule {
 		return $res;
 	}
 	private function SetupBuffers() {
-		// inst-<ipsID> Buffers and triggerScript-<ScriptName>
+		// inst-<ipsID> Buffers and triggerScript-<ScriptName> and build the trigger Name table
+		$triggerNameTable = [];
 		$data = [];
 		foreach (json_decode($this->ReadAttributeString("triggers"), true) as $trigger) {
 			foreach ($trigger["instanceTriggers"] as $inst) {
@@ -215,6 +216,7 @@ class Statemachine extends IPSModule {
 				}
 			}
 			$this->SetBuffer("triggerScript-" . $trigger["triggerName"], $trigger["triggerScript"]);
+			$triggerNameTable[$trigger["triggerGenID"]] = $trigger["triggerName"];
 		}
 		foreach ($data as $key => $value) {
 			$this->SetBuffer($key, json_encode($value));
@@ -224,7 +226,7 @@ class Statemachine extends IPSModule {
 		$data = [];
 		foreach (json_decode($this->ReadAttributeString("transitions"), true) as $transition) {
 			$start = $transition["transitionStart"];
-			$trigger = $transition["transitionTrigger"];
+			$trigger = $triggerNameTable[$transition["transitionTrigger"]];
 			if (str_starts_with($start, "state-")) {
 				if (!array_key_exists($start, $data)) {
 					$data[$start] = ["fromState" => [], "fromGroup" => []];		// to be able to detect double assignments
