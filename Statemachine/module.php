@@ -155,6 +155,7 @@ class Statemachine extends IPSModule {
 	private function intTrigger($trigger, $activeState) {
 		// run the trigger Script
 		$scriptRes = IPS_RunScriptTextWait($this->GetBufferSave("triggerScript-" . $trigger));
+		$this->LogMessage($scriptRes, 10204);
 		$res = strtolower(trim($scriptRes));
 		if ($res == "true") {
 			// continue execution
@@ -168,6 +169,7 @@ class Statemachine extends IPSModule {
 		}
 		// find new State
 		$outgoing = $this->GetBufferSave($activeState);
+		$this->LogMessage($outgoing, 10204);
 		if ($outgoing == "") {
 			// state has no outgoing transitions
 			return;
