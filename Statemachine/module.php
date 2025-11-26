@@ -129,7 +129,7 @@ class Statemachine extends IPSModule {
 
 	public function Trigger (string $TriggerName) : void {
 		$activeState = $this->ReadAttributeString("activeState");
-		$this->intTrigger($triggerName, $activeState);
+		$this->intTrigger($TriggerName, $activeState);
 	}
 
 	public function AddDevices(int $parentID) : void {
