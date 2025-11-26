@@ -185,7 +185,7 @@ class Statemachine extends IPSModule {
 		$states = json_decode($this->ReadAttributeString("states"), true);
 		$vals = $states[$stateGenID]["values"];
 		foreach ($vals as $instID => $value) {
-			SetValue($instID, $value);	// ips set value function
+			VirtDev_WriteValue($instID, $value);	// so far only support VirtDev devices
 		}
 
 	}
