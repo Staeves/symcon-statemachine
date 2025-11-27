@@ -131,7 +131,6 @@ class Statemachine extends IPSModule {
 				$this->LogMessage("No action in MessageSing on VM_UPDATE for " . $SenderID, 10204);
 				return;
 			}
-			$this->LogMessage($buff_val, 10204);
 			$buff_val = json_decode($buff_val, true);
 			$activeState = $this->ReadAttributeString("activeState");
 			if ($Data[1]) {
@@ -152,7 +151,6 @@ class Statemachine extends IPSModule {
 
 	public function Trigger (string $TriggerName) : void {
 		$activeState = $this->ReadAttributeString("activeState");
-		$this->LogMessage($activeState, 10204);
 		$this->intTrigger($TriggerName, $activeState);
 	}
 
@@ -178,7 +176,6 @@ class Statemachine extends IPSModule {
 	private function intTrigger($trigger, $activeState) {
 		// run the trigger Script
 		$scriptRes = IPS_RunScriptTextWait($this->GetBufferSave("triggerScript-" . $trigger));
-		$this->LogMessage($scriptRes, 10204);
 		$res = strtolower(trim($scriptRes));
 		if ($res == "true") {
 			// continue execution
@@ -192,7 +189,6 @@ class Statemachine extends IPSModule {
 		}
 		// find new State
 		$outgoing = $this->GetBufferSave($activeState);
-		$this->LogMessage($outgoing, 10204);
 		if ($outgoing == "") {
 			// state has no outgoing transitions
 			return;
@@ -215,8 +211,6 @@ class Statemachine extends IPSModule {
 
 	// return buffer name, and set up the buffers, if they are not
 	private function GetBufferSave($name) {
-		$this->LogMessage($name, 10204);
-		$this->LogMessage(json_encode($this->GetBufferList()), 10204);
 		$res = $this->GetBuffer($name);
 		if ($res == "") {
 			$this->SetupBuffers();
