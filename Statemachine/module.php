@@ -131,7 +131,7 @@ class Statemachine extends IPSModule {
 				$this->LogMessage("No action in MessageSing on VM_UPDATE for " . $SenderID, 10204);
 				return;
 			}
-			$buff_val = json_decode($buff_val);
+			$buff_val = json_decode($buff_val, true);
 			$activeState = $this->ReadAttributeString("activeState");
 			if ($Data[1]) {
 				// change (which is also an update)
