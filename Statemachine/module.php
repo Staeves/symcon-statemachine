@@ -6,6 +6,10 @@ class Statemachine extends IPSModule {
 		// Don't delete this line
 		parent::Create();
 		
+		// variables
+		$this->RegisterVariableString("state", "Zustand");
+		$this->RegisterVariableInteger("stateID", "ZustandsID");
+
 		// use atributes, so that we can alter and format them as we want
 		$this->RegisterAttributeString("devices", "[]");	// json encoded list of devices that are part of this Statemachine
 		$this->RegisterAttributeString("states", "[]");		// json encoded list of states each is [<genid> => ["id" => int, "name"=> string, "values" => [<instanceID> => Value]]]
@@ -77,7 +81,11 @@ class Statemachine extends IPSModule {
 		// if not set to a valide value set active State to the first state
 		$activeState = $this->ReadAttributeString("activeState");
 		if (!empty($convertedStates) && !array_key_exists($activeState, $convertedStates)) {
-			$this->WriteAttributeString("activeState", array_keys($convertedStates)[0]);
+			$activeState = array_keys($convertedStates)[0];
+			$this->WriteAttributeString("activeState", $activeState);
+			// update the variables
+			$this->SetValue("state", $convertedStates[$activeState]["name"]);
+			$this->SetValue("stateID", $convertedStates[$activeState]["id"]);
 		}
 
 		// state group List
@@ -202,6 +210,9 @@ class Statemachine extends IPSModule {
 	private function ActivateState($stateGenID) {
 		$this->WriteAttributeString("activeState", $stateGenID);
 		$states = json_decode($this->ReadAttributeString("states"), true);
+		// update the variables
+		$this->SetValue("state", $states[$stateGenID]["name"]);
+		$this->SetValue("stateID", $states[$stateGenID]["id"]);
 		$vals = $states[$stateGenID]["values"];
 		foreach ($vals as $instID => $value) {
 			VirtDev_WriteValue($instID, $value);	// so far only support VirtDev devices
