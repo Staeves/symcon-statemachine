@@ -126,7 +126,7 @@ class Statemachine extends IPSModule {
 		//$this->LogMessage($TimeStamp . $SenderID . $MessageID . print_r($Data, true), 10204);
 		// for variable update: $Data is array with 6 elements [0]: new value; [1]: has the values changed; [2]: old value; [3-5] time stamps
 		if ($MessageID == VM_UPDATE) {
-			$buff_val = $this->GetBufferSave("ints-".$SenderID);
+			$buff_val = $this->GetBufferSave("inst-".$SenderID);
 			if ($buff_val == "") {
 				$this->LogMessage("No action in MessageSing on VM_UPDATE for " . $SenderID, 10204);
 				return;
