@@ -214,6 +214,8 @@ class Statemachine extends IPSModule {
 
 	// return buffer name, and set up the buffers, if they are not
 	private function GetBufferSave($name) {
+		$this->LogMessage($name, 10204);
+		$this->LogMessage(json_encode($this->GetBufferList()), 10204);
 		$res = $this->GetBuffer($name);
 		if ($res == "") {
 			$this->SetupBuffers();
