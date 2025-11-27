@@ -135,7 +135,8 @@ class Statemachine extends IPSModule {
 			$activeState = $this->ReadAttributeString("activeState");
 			if ($Data[1]) {
 				// change (which is also an update)
-				for (array_merge($buff_val["onUpdate"], $buff_val["onChange"]) as $trigger_name) {
+				$merge = array_merge($buff_val["onUpdate"], $buff_val["onChange"]);
+				for ($merge as $trigger_name) {
 					$this->intTrigger($trigger_name, $activeState);
 				}
 			} else {
