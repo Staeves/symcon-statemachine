@@ -136,12 +136,12 @@ class Statemachine extends IPSModule {
 			if ($Data[1]) {
 				// change (which is also an update)
 				$merge = array_merge($buff_val["onUpdate"], $buff_val["onChange"]);
-				for ($merge as $trigger_name) {
+				foreach ($merge as $trigger_name) {
 					$this->intTrigger($trigger_name, $activeState);
 				}
 			} else {
 				// on update (without change)
-				for ($buff_val["onUpdate"] as $trigger_name) {
+				foreach ($buff_val["onUpdate"] as $trigger_name) {
 					$this->intTrigger($trigger_name, $activeState);
 				}
 			}
