@@ -231,7 +231,7 @@ class Statemachine extends IPSModule {
 				if (!array_key_exists($key, $data)) {
 					$data[$key] = ["onUpdate" => [], "onChange" => []];
 				}
-				if ($inst["varaibleTriggerType"] == 0) {
+				if ($inst["varaiableTriggerType"] == 0) {
 					array_push($data[$key]["onUpdate"], $trigger["triggerName"]);
 				} else {
 					array_push($data[$key]["onUpdate"], $trigger["triggerName"]);
