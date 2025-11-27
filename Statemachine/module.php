@@ -237,7 +237,7 @@ class Statemachine extends IPSModule {
 				if ($inst["variableTriggerType"] == 0) {
 					array_push($data[$key]["onUpdate"], $trigger["triggerName"]);
 				} else {
-					array_push($data[$key]["onUpdate"], $trigger["triggerName"]);
+					array_push($data[$key]["onChange"], $trigger["triggerName"]);
 				}
 			}
 			$this->SetBuffer("triggerScript-" . $trigger["triggerName"], $trigger["triggerScript"]);
