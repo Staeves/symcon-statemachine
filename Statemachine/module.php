@@ -5,6 +5,9 @@ class Statemachine extends IPSModule {
 	public function Create(): void {
 		// Don't delete this line
 		parent::Create();
+
+		// use HTML Visualisation to display state Transitions
+		$this->SetVisualizationType(1);
 		
 		// variables
 		$this->RegisterVariableString("state", "Zustand");
@@ -311,6 +314,13 @@ class Statemachine extends IPSModule {
 		}
 	}
 
+
+	/*
+	 * HTML-SDK Functions
+	 */
+	public function GetVisualizationTile() {
+		return file_get_contents('./module.html');
+	}
 
 	/* 
 	 * private Form functions
