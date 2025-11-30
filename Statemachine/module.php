@@ -9,6 +9,8 @@ class Statemachine extends IPSModule {
 		// variables
 		$this->RegisterVariableString("state", "Zustand");
 		$this->RegisterVariableInteger("stateID", "ZustandsID");
+		$this->EnableAction("state");
+		$this->EnableAction("stateID");
 
 		// use atributes, so that we can alter and format them as we want
 		$this->RegisterAttributeString("devices", "[]");	// json encoded list of devices that are part of this Statemachine
@@ -128,6 +130,26 @@ class Statemachine extends IPSModule {
 	}
 
 	public function RequestAction ($Ident, $Value) : void {
+		$states = json_decode($this->ReadAttributeString("states"), true);
+		if ($Ident === "state") {
+			// activate the state with name $Value
+			foreach ($states as $genID => $state) {
+				if ($state["name"] == $Value) {
+					$this->ActivateState($genID);
+					return;
+				}
+			}
+			echo "Zustand " . $Value . " nicht gefunden";
+		} elseif ($Ident === "stateID") {
+			// activate the state with user assigned id $Value
+			foreach ($states as $genID => $state) {
+				if ($state["id"] == $Value) {
+					$this->ActivateState($genID);
+					return;
+				}
+			}
+			echo "Zustand mit der id " . $Value . " nicht gefunden.";
+		}
 	}
 
 	public function MessageSink ($TimeStamp, $SenderID, $MessageID, $Data) : void {
