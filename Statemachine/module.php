@@ -319,7 +319,7 @@ class Statemachine extends IPSModule {
 	 * HTML-SDK Functions
 	 */
 	public function GetVisualizationTile() {
-		return file_get_contents(__DIR__ . 'module.html');
+		return file_get_contents(__DIR__ . '/module.html');
 	}
 
 	/* 
