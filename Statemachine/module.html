@@ -62,24 +62,35 @@
 		// place all left states
 		let y = 20;
 		for (const genID of leftStates) {
-			placeState(genID, 20, y, "start", states[genID].name, svg);
+			placeState("left-", genID, 20, y, "start", states[genID].name, svg);
 			y += 30;
 		}
 		for (const genID in stateGroups) {
-			placeState(genID, 20, y, "start", stateGroups[genID].name, svg);
+			placeState("left-", genID, 20, y, "start", stateGroups[genID].name, svg);
 			y += 30;
 		}
 		// place right states
 		y = 20
 		for (const genID in states) {
-			placeState(genID, document.getElementById("svg").getBoundingClientRect().width - 20, y, "end", states[genID].name, svg);
+			placeState("right-", genID, document.getElementById("svg").getBoundingClientRect().width - 20, y, "end", states[genID].name, svg);
 			y += 30;
+		}
+		// draw transitions
+		for (const trans of transitions) {
+			let start = document.getElementById("left-" + trans["transitionStart"]).getBoundingClientRect();
+			let end = document.getElementById("right-" + trans["transitionEnd"]).getBoundingClientRect();
+			let d = "M" + start.right + "," + (start.top + (start.height/2)) + " L" + end.left + "," + (end.top + (end.height/2));
+			let style = "stroke:red; stroke-width: 1.25px; fill: none; marker-end: url(#arrow);";
+			let arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+			arrow.setAttribute("d", d);
+			arrow.setAttribute("style", style);
+			svg.appendChild(arrow);
 		}
 	}
 
-	function placeState(genID, x, y, anchor, name, svg) {
+	function placeState(prefix, genID, x, y, anchor, name, svg) {
 		let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-		text.setAttribute("id", "left-" + genID);
+		text.setAttribute("id", prefix + genID);
 		if (genID == activeState) {
 			text.setAttribute("filter", "url(#active-background)");
 		} else {
