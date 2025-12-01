@@ -19,9 +19,11 @@
 		console.log(states);
 		// reset everyone
 		for (const genID in states) {
+			console.log(genID);
 			states[genID].outgoingCount = 0;
 		}
 		for (const genID in stateGroups) {
+			console.log(genID);
 			states[genID].outgoingCount = 0;
 		}
 		// count how many outgoing
