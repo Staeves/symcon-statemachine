@@ -3,6 +3,13 @@
 		<marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
 			<path d="M2,2 L2,11 L10,6 L2,2" style="fill:black;" />
 		</marker>
+		<filter x="0" y="0" width="1" height="1" id="background">
+			<feFlood flood-color="red" result="bg" />
+			<feMerge>
+				<feMergeNode in="bg"/>
+				<feMergeNode in="SourceGraphic"/>
+			</feMerge>
+		</filter>
 	</defs>
 	<g id="image">
 	</g>
@@ -51,6 +58,7 @@
 			console.log("adding left State " + genID);
 			let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 			text.setAttribute("id", genID);
+			text.setAttribute("filter", "url(#background)");
 			text.setAttribute('x', '20');
 			text.setAttribute('y', y);
 			text.textContent = states[genID].name;
