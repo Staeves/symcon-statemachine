@@ -79,6 +79,8 @@
 		for (const trans of transitions) {
 			let start = document.getElementById("left-" + trans["transitionStart"]).getBoundingClientRect();
 			let end = document.getElementById("right-" + trans["transitionEnd"]).getBoundingClientRect();
+			console.log(start);
+			console.log(end);
 			let d = "M" + start.right + "," + (start.top + (start.height/2)) + " L" + end.left + "," + (end.top + (end.height/2));
 			let style = "stroke:red; stroke-width: 1.25px; fill: none; marker-end: url(#arrow);";
 			let arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
