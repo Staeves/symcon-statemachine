@@ -24,7 +24,7 @@
 		}
 		for (const genID in stateGroups) {
 			console.log(genID);
-			states[genID].outgoingCount = 0;
+			stateGroups[genID].outgoingCount = 0;
 		}
 		// count how many outgoing
 		for (const trans of transitions) {
