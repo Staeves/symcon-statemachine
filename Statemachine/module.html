@@ -55,21 +55,28 @@
 		// place all left states
 		let y = 20;
 		for (const genID of leftStates) {
-			placeState(genID, 20, y, states[genID].name, svg);
+			placeState(genID, 20, y, "start", states[genID].name, svg);
 			y += 30;
 		}
 		for (const genID in stateGroups) {
-			placeState(genID, 20, y, stateGroups[genID].name, svg);
+			placeState(genID, 20, y, "start", stateGroups[genID].name, svg);
+			y += 30;
+		}
+		// place right states
+		y = 20
+		for (const genID in states) {
+			placeState(genID, svg.getBoundingClientRect().width - 20, y, "end", states[genID].name, svg);
 			y += 30;
 		}
 	}
 
-	function placeState(genID, x, y, name, svg) {
+	function placeState(genID, x, y, anchor, name, svg) {
 			let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 			text.setAttribute("id", "left-" + genID);
 			text.setAttribute("filter", "url(#background)");
 			text.setAttribute('x', x);
 			text.setAttribute('y', y);
+			text.setAttribute('text-anchor', anchor);
 			text.textContent = name;
 			svg.appendChild(text);
 	}
