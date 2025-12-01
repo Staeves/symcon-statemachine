@@ -77,7 +77,7 @@
 		}
 		// draw transitions
 		for (const trans of transitions) {
-			let start = document.getElementById("left-" + trans["transitionStart"]).clientHeight;
+			let start = document.getElementById("left-" + trans["transitionStart"]).textLength.baseVal.value;
 			let end = document.getElementById("right-" + trans["transitionEnd"]).getClientRects();
 			console.log(start);
 			console.log(end);
