@@ -77,8 +77,8 @@
 		}
 		// draw transitions
 		for (const trans of transitions) {
-			let start = document.getElementById("left-" + trans["transitionStart"]).getBBox();
-			let end = document.getElementById("right-" + trans["transitionEnd"]).getBBox();
+			let start = document.getElementById("left-" + trans["transitionStart"]).getBBox({stroke:true, markers: true});
+			let end = document.getElementById("right-" + trans["transitionEnd"]).getBBox({stroke:true, markers: true});
 			console.log(start);
 			console.log(end);
 			let d = "M" + (start.x + (start.width)) + "," + (start.y + (start.height/2)) + " L" + end.x + "," + (end.y + (end.height/2));
