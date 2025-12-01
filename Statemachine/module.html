@@ -1,121 +1,57 @@
-<h1>
-	TEST
-</h1>
-<p>
-lorea
-asdf
-adf
-adsf
+<svg>
+	<defs>
+		<marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
+			<path d="M2,2 L2,11 L10,6 L2,2" style="fill:black;" />
+		</marker>
+	</defs>
+	<div id="image">
+	</div>
+</svg>
+<script>
+	/*
+	 * states = {<genID>: {name:<name>, id: <id>, values: {<ipsID>:<value>,...}},...}
+	 * stateGroups = {<genID>: {name:<name>, states: [<stateGenID>,...]},...}
+	 * transitions = [{transitionStart:<genID>, transitionEnd:<genID>, transitionTrigger:<genID>},...]
+	 * activeState = <genID>
+	 */
+	function drawStatemachine() {
+		let svg = document.getElementByID("image");
+		// reset everyone
+		for (const genID in states) {
+			states[genID].outgoingCount = 0;
+		}
+		for (const genID in stateGroups) {
+			states[genID].outgoingCount = 0;
+		}
+		// count how many outgoing
+		for (const trans of transitions) {
+			if (trans["transitionStart"] in states) {
+				states[trans["transitionStart"]].outgoingCount += 1;
+			} else {
+				stateGroups[trans["transitionStart"]].outgoingCount += 1;
+			}
+		}
+		// get a list of all states with outgoing transitions to draw on the left
+		let leftStates = [];
+		for (const genID in states) {
+			if (states[genID].outgoingCount > 0) {
+				leftStates.push(genID);
+			}
+		}
+		//leftStates.push(...Object.keys(stateGroups));
+		// clear out the current image
+		svg.innerHTML = "";
+		// place all left states
+		let y = 20;
+		for (const genID of leftStates) {
+			let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+			text.setAttribute("id", genID);
+			text.setAttribute('x', '20');
+			text.setAttribute('y', y);
+			svg.appendChild(text);
+			y += 30;
+		}
+	}
 
-a
-
-ds
-fg
-sd
-fg
-
-dsf
-g
-dfsgsd
-f
-gd
-sf
-g
-sdf
-g
-
-dsf
-df
-ss
-d
-fg
-s
-df
-s
-df
-
-sd
-fg
-s
-dfg
-sd
-fg
-sdf
-
-sgfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab
-</p>
-<br>
-<a>
-	asdfadfadasd
-	asdasdf
-	asdf
-	asd
-	fa
-	sdf
-	a
-	sdf
-	a
-	sdf
-	a
-	sd
-	d
-	a
-	sdf
-	a
-	sdf
-	a
-	s
-	df
-	asd
-	asdfasd
-
-	a
-	df
-	asd
-	as
-	a
-	fd
-	asd
-	fa
-	sdf
-	as
-	df
-	asdf
-	asd
-	fa
-	sd
-	fa
-	sd
-	f
-	as
-	df
-	asd
-	f
-	asd
-	f
-	asd
-	f
-	a
-	dsf
-	a
-	df
-	as
-	d
-	as
-	dfa
-	sd
-	fa
-	sd
-	as
-	df
-	sa
-	df
-	as
-	df
-	as
-	df
-	sda
-	f
-	asfd
-	hhhhhh
-</a>
+	drawStatemachine();
+</script>
