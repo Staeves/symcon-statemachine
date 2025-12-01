@@ -319,7 +319,12 @@ class Statemachine extends IPSModule {
 	 * HTML-SDK Functions
 	 */
 	public function GetVisualizationTile() {
-		return file_get_contents(__DIR__ . '/module.html');
+		$vals = "<script> let states = " . $this->ReadAttributeString("states") . ";
+				let stateGroups = " . $this->ReadAttributeString("stateGroups") . ";
+				let transitions = " . $this->ReadAttributeString("transitions") . ";
+				let activeState = \"" . $this->ReadAttributeString("activeState") . "\";
+			</script>";
+		return $vals + file_get_contents(__DIR__ . '/module.html');
 	}
 
 	/* 
