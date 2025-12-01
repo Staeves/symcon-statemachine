@@ -10,6 +10,13 @@
 				<feMergeNode in="SourceGraphic"/>
 			</feMerge>
 		</filter>
+		<filter x="-0.1" y="-0.1" width="1.2" height="1.2" id="active-background">
+			<feFlood flood-color="green" result="bg" />
+			<feMerge>
+				<feMergeNode in="bg"/>
+				<feMergeNode in="SourceGraphic"/>
+			</feMerge>
+		</filter>
 	</defs>
 	<g id="image">
 	</g>
@@ -71,14 +78,18 @@
 	}
 
 	function placeState(genID, x, y, anchor, name, svg) {
-			let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-			text.setAttribute("id", "left-" + genID);
+		let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+		text.setAttribute("id", "left-" + genID);
+		if (genID == activeState) {
+			text.setAttribute("filter", "url(#active-background)");
+		} else {
 			text.setAttribute("filter", "url(#background)");
-			text.setAttribute('x', x);
-			text.setAttribute('y', y);
-			text.setAttribute('text-anchor', anchor);
-			text.textContent = name;
-			svg.appendChild(text);
+		}
+		text.setAttribute('x', x);
+		text.setAttribute('y', y);
+		text.setAttribute('text-anchor', anchor);
+		text.textContent = name;
+		svg.appendChild(text);
 	}
 
 	drawStatemachine();
