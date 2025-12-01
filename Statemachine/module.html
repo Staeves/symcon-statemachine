@@ -77,8 +77,8 @@
 		}
 		// draw transitions
 		for (const trans of transitions) {
-			let start = document.getElementById("left-" + trans["transitionStart"]).getComputedTextLength();
-			let end = document.getElementById("right-" + trans["transitionEnd"]).getComputedTextLength();
+			let start = document.getElementById("left-" + trans["transitionStart"]).getClientRects();
+			let end = document.getElementById("right-" + trans["transitionEnd"]).getClientRects();
 			console.log(start);
 			console.log(end);
 			let d = "M" + (start.x + (start.width)) + "," + (start.y + (start.height/2)) + " L" + end.x + "," + (end.y + (end.height/2));
