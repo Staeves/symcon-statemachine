@@ -15,7 +15,7 @@
 	 * activeState = <genID>
 	 */
 	function drawStatemachine() {
-		let svg = document.getElementByID("image");
+		let svg = document.getElementById("image");
 		// reset everyone
 		for (const genID in states) {
 			states[genID].outgoingCount = 0;
