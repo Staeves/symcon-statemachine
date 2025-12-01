@@ -55,11 +55,11 @@
 		// place all left states
 		let y = 20;
 		for (const genID of leftStates) {
-			placeState(genID, 20, y, states[genID], svg);
+			placeState(genID, 20, y, states[genID].name, svg);
 			y += 30;
 		}
 		for (const genID in stateGroups) {
-			placeState(genID, 20, y, stateGroups[genID], svg);
+			placeState(genID, 20, y, stateGroups[genID].name, svg);
 			y += 30;
 		}
 	}
