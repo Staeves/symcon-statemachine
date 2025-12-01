@@ -53,6 +53,7 @@
 			text.setAttribute("id", genID);
 			text.setAttribute('x', '20');
 			text.setAttribute('y', y);
+			text.textContent = states[genID].name;
 			svg.appendChild(text);
 			y += 30;
 		}
