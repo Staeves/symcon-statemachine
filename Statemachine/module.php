@@ -324,7 +324,7 @@ class Statemachine extends IPSModule {
 				let transitions = " . $this->ReadAttributeString("transitions") . ";
 				let activeState = \"" . $this->ReadAttributeString("activeState") . "\";
 			</script>";
-		return $vals + file_get_contents(__DIR__ . '/module.html');
+		return $vals . file_get_contents(__DIR__ . '/module.html');
 	}
 
 	/* 
