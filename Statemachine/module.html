@@ -28,6 +28,7 @@
 		}
 		// count how many outgoing
 		for (const trans of transitions) {
+			console.log(trans);
 			if (trans["transitionStart"] in states) {
 				states[trans["transitionStart"]].outgoingCount += 1;
 			} else {
