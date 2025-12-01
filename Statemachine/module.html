@@ -55,16 +55,23 @@
 		// place all left states
 		let y = 20;
 		for (const genID of leftStates) {
-			console.log("adding left State " + genID);
+			placeState(genID, 20, y, states[genID], svg);
+			y += 30;
+		}
+		for (const genID in stateGroups) {
+			placeState(genID, 20, y, stateGroups[genID], svg);
+			y += 30;
+		}
+	}
+
+	function placeState(genID, x, y, name, svg) {
 			let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 			text.setAttribute("id", genID);
 			text.setAttribute("filter", "url(#background)");
-			text.setAttribute('x', '20');
+			text.setAttribute('x', x);
 			text.setAttribute('y', y);
 			text.textContent = states[genID].name;
 			svg.appendChild(text);
-			y += 30;
-		}
 	}
 
 	drawStatemachine();
