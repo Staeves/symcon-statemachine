@@ -16,6 +16,7 @@
 	 */
 	function drawStatemachine() {
 		let svg = document.getElementById("image");
+		console.log(states);
 		// reset everyone
 		for (const genID in states) {
 			states[genID].outgoingCount = 0;
