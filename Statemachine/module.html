@@ -81,7 +81,7 @@
 			let end = document.getElementById("right-" + trans["transitionEnd"]).getBBox();
 			console.log(start);
 			console.log(end);
-			let d = "M" + (start.x + start.width) + "," + (start.y + (start.height/2)) + " L" + end.x + "," + (end.y + (end.height/2));
+			let d = "M" + (start.x + (start.width*1.2)) + "," + (start.y + (start.height/2)) + " L" + end.x + "," + (end.y + (end.height/2));
 			let style = "stroke:red; stroke-width: 1.25px; fill: none; marker-end: url(#arrow);";
 			let arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 			arrow.setAttribute("d", d);
