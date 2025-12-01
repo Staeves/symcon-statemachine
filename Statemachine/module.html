@@ -92,7 +92,7 @@
 			let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 			let textP = document.createElementNS('http://www.w3.org/2000/svg', 'textPath');
 			textP.setAttribute("href", "#" + trans["transitionStart"] + trans["transitionEnd"] + trans["transitionTrigger"]);
-			textP.textContent = trans["transitionTrigger"];
+			textP.textContent = getTriggerName(trans["transitionTrigger"]);
 			text.appendChild(textP);
 			svg.appendChild(text);
 		}
@@ -112,6 +112,15 @@
 		text.setAttribute('text-anchor', anchor);
 		text.textContent = name;
 		svg.appendChild(text);
+	}
+
+	function getTriggerName(genID) {
+		for (const trigger of triggers) {
+			if (trigger["triggerGenID"] == genID) {
+				return trigger["triggerName"];
+			}
+		}
+		return "";
 	}
 
 	drawStatemachine();
