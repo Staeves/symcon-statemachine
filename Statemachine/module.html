@@ -66,7 +66,7 @@
 
 	function placeState(genID, x, y, name, svg) {
 			let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-			text.setAttribute("id", genID);
+			text.setAttribute("id", "left-" + genID);
 			text.setAttribute("filter", "url(#background)");
 			text.setAttribute('x', x);
 			text.setAttribute('y', y);
