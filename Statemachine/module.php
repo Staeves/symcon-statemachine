@@ -211,6 +211,9 @@ class Statemachine extends IPSModule {
 	public function UpdateNextStateGroupListIndex() : void {
 		$this->UpdateFormField("stateGroupsList", "columns.2.add", uniqid("group-"));
 	}
+	public function UpdateNextTriggerListIndex() : void {
+		$this->UpdateFormField("triggersList", "columns.3.add", uniqid("trigger-"));
+	}
 
 	/*
 	 * private functions
@@ -683,7 +686,7 @@ class Statemachine extends IPSModule {
 					"width" => "300px"
 				],
 				[
-					"add" => "// crazy script",
+					"add" => "echo 'true';",
 					"caption" => "Bedingungen Skript",
 					"edit" => [
 						"type" => "ScriptEditor"
@@ -706,7 +709,11 @@ class Statemachine extends IPSModule {
 			"delete" => true,
 			"rowCount" => 10,
 			"values" => $triggerValues,
-			"loadValuesFromConfiguration" => false
+			"loadValuesFromConfiguration" => false,
+			"onAdd" => "StateM_UpdateNextTriggerListIndex(\$id);",
+			"onChangeOrder" => "StateM_UpdateNextTriggerListIndex(\$id);",
+			"onDelete" => "StateM_UpdateNextTriggerListIndex(\$id);",
+			"onEdit" => "StateM_UpdateNextTriggerListIndex(\$id);"
 		];
 	}
 	private function transitionsListForm() {
