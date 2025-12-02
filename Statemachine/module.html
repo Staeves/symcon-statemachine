@@ -23,10 +23,31 @@
 </svg>
 <script>
 	addEventListener("resize", (event) => {drawStatemachine();});
+
+	function handleMessage(data) {
+		data = JSON.parse(data);
+		for (const variable in data) {
+			if (variable == "states") {
+				states = data["states"];
+			} else if (variable == "stateGroups") {
+				stateGroups = data["stateGroups"];
+			} else if (variable == "transitions") {
+				transitions = data["transitions"];
+			} else if (variable == "triggers") {
+				triggers = data["triggers"];
+			} else if (variable == "activeState") {
+				activeState = data["activeState"];
+			} else {
+				console.log("unknown key in data");
+				console.log(data);
+			}
+		}
+		drawStatemachine();
 	/*
 	 * states = {<genID>: {name:<name>, id: <id>, values: {<ipsID>:<value>,...}},...}
 	 * stateGroups = {<genID>: {name:<name>, states: [<stateGenID>,...]},...}
 	 * transitions = [{transitionStart:<genID>, transitionEnd:<genID>, transitionTrigger:<genID>},...]
+	 * triggers = [...]
 	 * activeState = <genID>
 	 */
 	function drawStatemachine() {

@@ -128,6 +128,15 @@ class Statemachine extends IPSModule {
 		// transitions List
 		$this->WriteAttributeString("transitions", $this->ReadPropertyString("transitionsList"));
 
+		// update all visualisations
+		$data = ["states" => $convertedStates,
+			"stateGroups" => $convertedStateGroups,
+			"transitions" => json_decode($this->ReadAttributeString("transitions")),
+			"triggers" => json_decode($this->ReadAttributeString("triggers")),
+			"activeState" => $activeState
+		];
+		$this->UpdateVisualizationValue(json_encode($data));
+
 		// update the buffers
 		$this->SetupBuffers();
 	}
@@ -242,7 +251,7 @@ class Statemachine extends IPSModule {
 		foreach ($vals as $instID => $value) {
 			VirtDev_WriteValue($instID, $value);	// so far only support VirtDev devices
 		}
-
+		$this->UpdateVisualizationValue(json_encode(["activeState" => $stateGenID]));
 	}
 
 	// return buffer name, and set up the buffers, if they are not
