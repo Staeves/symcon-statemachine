@@ -301,7 +301,7 @@ class Statemachine extends IPSModule {
 				if (!array_key_exists($trigger, $data[$start]["fromState"])) {
 					$data[$start]["fromState"][$trigger] = $transition["transitionEnd"];
 				} else {
-					$problemState = json_decode($this->ReadAttributeString("states"))[$start];
+					$problemState = json_decode($this->ReadAttributeString("states"), true)[$start];
 					$this->LogMessage("Zustandsautomat hat mindestens zwei Zustandsübergänge mit dem selben Trigger aus Zustand " . $problemState, 10205);
 				}
 			} else {
@@ -314,7 +314,7 @@ class Statemachine extends IPSModule {
 					if (!array_key_exists($trigger, $data[$state]["fromGroup"])) {
 						$data[$state]["fromGroup"][$trigger] = $transition["transitionEnd"];
 					} else {
-						$problemState = json_decode($this->ReadAttributeString("states"))[$state];
+						$problemState = json_decode($this->ReadAttributeString("states"), true)[$state];
 						$this->LogMessage("Zustandsautomat hat mindestens zwei Zustandsübergänge mit dem selben Trigger aus Zustand " . $problemState . " durch eine oder mehrere Zustandsgruppen", 10205);
 					}
 				}
