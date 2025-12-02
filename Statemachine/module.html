@@ -114,7 +114,7 @@
 			let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 			let textP = document.createElementNS('http://www.w3.org/2000/svg', 'textPath');
 			textP.setAttribute("href", "#" + trans["transitionStart"] + trans["transitionEnd"] + trans["transitionTrigger"]);
-			textP.setAttribute("startOffset", "10%");
+			textP.setAttribute("startOffset", (Math.random()*100) + "%");
 			textP.textContent = getTriggerName(trans["transitionTrigger"]);
 			text.appendChild(textP);
 			svg.appendChild(text);
