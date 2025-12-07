@@ -1,0 +1,18 @@
+{
+	"id":"{A5C4E6A0-F17A-1AD0-C040-5D78792599B5}",
+	"caption":"Zustandsübergang auslösen",
+	"form": [
+		{
+			"caption": "Auslöser Name",
+			"name": "triggerName",
+			"type": "ValidationTextBox"
+		}
+	],
+	"action": "StateM_Trigger($_IPS['TARGET'], $_IPS['triggerName']);",
+	"category": "target",
+	"restrictions": [
+		"objectType": [1],
+		"moduleID": ["{977AC9BE-70DA-F8F2-2E85-1FEA2C8CCC1D}"]
+	],
+	"description": "Löse einen Auslöser des Zustandsautomaten aus."
+}
