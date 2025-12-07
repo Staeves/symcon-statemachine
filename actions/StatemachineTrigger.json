@@ -10,5 +10,8 @@
 	],
 	"action": "StateM_Trigger($_IPS['TARGET'], $_IPS['triggerName']);",
 	"category": "target",
+	"restrictions": [
+		"objectType": [ 1 ]
+	],
 	"description": "Löse einen Auslöser des Zustandsautomaten aus."
 }
