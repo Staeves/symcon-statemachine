@@ -8,5 +8,7 @@
 			"type": "ValidationTextBox"
 		}
 	],
-	"action": "StateM_Trigger($_IPS['TARGET'], $_IPS['triggerName']);"
+	"action": "StateM_Trigger($_IPS['TARGET'], $_IPS['triggerName']);",
+	"category": "target",
+	"description": "Löse einen Auslöser des Zustandsautomaten aus."
 }
